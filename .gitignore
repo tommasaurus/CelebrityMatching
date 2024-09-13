@@ -1,0 +1,7 @@
+# Ignore the virtual environment folder 'celebrity'
+celebrity/
+
+# Ignore the 'downloaded_images' folder
+downloaded_images/
+
+.image_data.csv
