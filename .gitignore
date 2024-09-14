@@ -3,5 +3,10 @@ celebrity/
 
 # Ignore the 'downloaded_images' folder
 downloaded_images/
+downloaded/
+downloaded_onlyfans/
 
-.image_data.csv
+images/
+
+image_data.csv
+onlyfans_data.csv
