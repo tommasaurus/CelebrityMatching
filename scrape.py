@@ -4,10 +4,11 @@ import os
 import csv
 
 # URL of the page you want to scrape
-url = 'https://www.porn-star.com/top100.html'
+url = 'https://www.babepedia.com/pornstartop100'
 
 # Make a request to get the HTML content of the page
 response = requests.get(url)
+
 html_content = response.text
 
 # Parse the HTML content with BeautifulSoup
