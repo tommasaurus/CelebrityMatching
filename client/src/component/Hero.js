@@ -13,11 +13,13 @@ import {
 } from "lucide-react";
 import "./Hero.css";
 import Navbar from "./Navbar";
+import ImageDisplay from "./ui/ImageDisplay";
 
 const Hero = ({ navigateTo }) => {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [topMatchImageName, setTopMatchImageName] = useState(null); 
+  const [uploading, setUploading] = useState(false); // State to track uploading status  
   const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
@@ -76,11 +78,33 @@ const Hero = ({ navigateTo }) => {
         },
       });
       console.log(response.data);
-      setUploading(false); // Reset uploading state
+      
       // Process the response (e.g., display the result)
+      setTopMatchImageName(response.data.top_match_image_url);
     } catch (error) {
-      console.error("Error uploading image:", error);
-      setUploading(false); // Reset uploading state
+        console.error("Error uploading image:", error);
+    } finally {
+        setUploading(false); // End uploading
+    }    
+  };
+
+  const handleFindTwin = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await axios.post("/upload-image/", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        // Set the top match image name from the response
+        setTopMatchImageName(response.data.top_match_image_name);
+    } catch (error) {
+        console.error("Error uploading image:", error);
     }
   };
 
@@ -153,8 +177,7 @@ const Hero = ({ navigateTo }) => {
               </button>
             </div>
           )}
-
-          {/* Upload Button */}
+          
           <button
             className='upload-button'
             onClick={handleUploadFile}
@@ -162,6 +185,13 @@ const Hero = ({ navigateTo }) => {
           >
             {uploading ? "Uploading..." : "Find Twin"}
           </button>
+
+          {topMatchImageName && (
+              <div className='top-match'>
+                  <h2>Your Top Match</h2>
+                  <ImageDisplay imageName={topMatchImageName} />
+              </div>
+          )}
 
           <div className='features'>
             <div className='feature'>
