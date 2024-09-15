@@ -119,7 +119,7 @@ def pad_and_show_images_side_by_side(image_paths, table_name, save_path):
     new_img.show()  # Optionally, show the image for visual confirmation
 
 # Example usage: An array of input images
-input_image_paths = ['images/scarlett.webp', 'images/emma.jpg']
+input_image_paths = ['app/services/images/emma.jpg']
 
 # Compare against the 'celebrity_features' table
 pad_and_show_images_side_by_side(input_image_paths, 'celebrity_features', 'comparison_celebrity_pairs.jpg')

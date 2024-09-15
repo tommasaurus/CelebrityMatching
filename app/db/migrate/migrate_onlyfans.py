@@ -62,7 +62,7 @@ def extract_features(img_path, model):
     return features.cpu().numpy()
 
 # Load the CSV file with image paths and names
-dataset = pd.read_csv('onlyfans_data.csv', header=None, names=['Image File Path', 'Name'])
+dataset = pd.read_csv('app/db/images/csv/onlyfans_data.csv', header=None, names=['Image File Path', 'Name'])
 
 # Insert data into the database
 for index, row in dataset.iterrows():

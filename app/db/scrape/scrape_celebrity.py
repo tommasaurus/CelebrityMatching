@@ -12,7 +12,7 @@ service = Service(driver_path)
 driver = webdriver.Chrome(service=service)
 
 # Path to save images
-images_folder = 'downloaded_onlyfans'
+images_folder = 'app/db/images/images_celebrity'
 os.makedirs(images_folder, exist_ok=True)
 
 # Headers to mimic a real browser request
@@ -83,32 +83,37 @@ def scrape_images(driver):
 
     return image_data
 
-try:
-    # Loop through the first 10 pages
+def scrape_onlyfans_pages(num_pages):
+    """Scrape the specified number of pages from the onlyfans top 100."""
     all_image_data = []
-    for page_num in range(1, 11):  # Adjust range to specify the number of pages to scrape
-        url = f'https://www.babepedia.com/onlyfanstop100?page={page_num}'
-        print(f"Scraping page: {url}")
-        
-        # Open the webpage
-        driver.get(url)
-        scroll_to_bottom(driver, scroll_pause_time=0.5, scroll_increment=300)
-        image_data = scrape_images(driver)
-        
-        # Add the image data from this page to the overall list
-        all_image_data.extend(image_data)
+    try:
+        # Loop through the specified number of pages
+        for page_num in range(1, num_pages + 1):  # Adjust range to specify the number of pages to scrape
+            url = f'https://www.babepedia.com/pornstartop100?page={page_num}'
+            print(f"Scraping page: {url}")
+            
+            # Open the webpage
+            driver.get(url)
+            scroll_to_bottom(driver, scroll_pause_time=0.5, scroll_increment=300)
+            image_data = scrape_images(driver)
+            
+            # Add the image data from this page to the overall list
+            all_image_data.extend(image_data)
 
-    # Save all data to CSV
-    if all_image_data:
-        csv_path = 'onlyfans_data.csv'
-        with open(csv_path, 'a') as csv_file:
-            for row in all_image_data:
-                csv_file.write(','.join(row) + '\n')
-        print(f"Data saved to {csv_path}")
+        # Save all data to CSV
+        if all_image_data:
+            csv_path = 'app/db/images/csv/celebrity_data.csv'
+            with open(csv_path, 'a') as csv_file:
+                for row in all_image_data:
+                    csv_file.write(','.join(row) + '\n')
+            print(f"Data saved to {csv_path}")
 
-except Exception as e:
-    print(f"An error occurred: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-finally:
-    time.sleep(3)
-    driver.quit()
+    finally:
+        time.sleep(3)
+        driver.quit()
+
+# Example usage
+scrape_onlyfans_pages(1)  

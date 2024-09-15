@@ -1,13 +1,10 @@
+import random
+import os
+import time
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import pandas as pd
-import requests
-import os
-import time
-import random  # Import random module
 
 # Set up the WebDriver
 driver_path = '/Users/tommyqu/Downloads/chromedriver-mac-arm64/chromedriver'
@@ -15,7 +12,7 @@ service = Service(driver_path)
 driver = webdriver.Chrome(service=service)
 
 # Path to save images
-images_folder = 'downloaded'
+images_folder = 'app/db/images/images_onlyfans'
 os.makedirs(images_folder, exist_ok=True)
 
 # Headers to mimic a real browser request
@@ -41,10 +38,9 @@ def scroll_to_bottom(driver, scroll_pause_time=1, scroll_increment=200):
             break
 
 def scrape_images(driver):
-    # Open the webpage    
+    # Wait for elements to load (modify the wait as needed)
     image_data = []
 
-    # Wait for elements to load (modify the wait as needed)
     try:
         # Locate all elements containing the images and names
         elements = driver.find_elements(By.CLASS_NAME, 'thumbshot')
@@ -77,11 +73,7 @@ def scrape_images(driver):
                     image_data.append([img_filepath, name])
                 else:
                     print(f"Failed to download image. Status code: {response.status_code}")
-
-                # Introduce a random delay to mimic human behavior
-                # sleep_time = random.uniform(1.1, 1.5)  # Random sleep between 2 to 5 seconds
-                # print(f"Sleeping for {sleep_time:.2f} seconds")
-                # time.sleep(sleep_time)
+                
 
             except Exception as e:
                 print(f"Error processing {name}: {e}")
@@ -91,23 +83,37 @@ def scrape_images(driver):
 
     return image_data
 
-try:
-    # Scrape the images and get the list of [filepath, name]
-    driver.get('https://www.babepedia.com/pornstartop100?page=10')
-    scroll_to_bottom(driver, scroll_pause_time=0.5, scroll_increment=300)
-    image_data = scrape_images(driver)
+def scrape_onlyfans_pages(num_pages):
+    """Scrape the specified number of pages from the onlyfans top 100."""
+    all_image_data = []
+    try:
+        # Loop through the specified number of pages
+        for page_num in range(1, num_pages + 1):  # Adjust range to specify the number of pages to scrape
+            url = f'https://www.babepedia.com/onlyfanstop100?page={page_num}'
+            print(f"Scraping page: {url}")
+            
+            # Open the webpage
+            driver.get(url)
+            scroll_to_bottom(driver, scroll_pause_time=0.5, scroll_increment=300)
+            image_data = scrape_images(driver)
+            
+            # Add the image data from this page to the overall list
+            all_image_data.extend(image_data)
 
-    # Save to CSV
-    if image_data:
-        csv_path = 'image_data.csv'
-        with open(csv_path, 'a') as csv_file:
-            for row in image_data:
-                csv_file.write(','.join(row) + '\n')
-        print(f"Data saved to {csv_path}")
+        # Save all data to CSV
+        if all_image_data:
+            csv_path = 'app/db/images/csv/onlyfans_data.csv'
+            with open(csv_path, 'a') as csv_file:
+                for row in all_image_data:
+                    csv_file.write(','.join(row) + '\n')
+            print(f"Data saved to {csv_path}")
 
-except Exception as e:
-    print(f"An error occurred: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-finally:
-    time.sleep(3)
-    driver.quit()
+    finally:
+        time.sleep(3)
+        driver.quit()
+
+# Example usage
+scrape_onlyfans_pages(1)  
