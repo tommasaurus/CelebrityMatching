@@ -1,0 +1,375 @@
+/* Hero.css */
+.hero-container {
+  background-image: url("/Users/RDua/Desktop/a/Code/Frontend/background.jpg");
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  padding-top: 80px; /* Adjust based on your navbar height */
+  color: rgb(231, 57, 57);
+}
+
+.hero-database-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.hero-skinny-description {
+  color: #ff4d4d;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-database-text {
+  color: #ff4d4d;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.hero-content {
+  background-color: rgba(248, 241, 225, 0.8);
+  border-radius: 60px;
+  box-shadow: 0 10px 30px rgb(255, 1, 1);
+  padding: 3rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4a4a4a;
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.upload-area {
+  border: 2px dashed #ff9a9e;
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-area:hover {
+  border-color: #ff3838;
+  background-color: #fff0f0;
+}
+
+.upload-area.dragging {
+  border-color: #ff3838;
+  background-color: #fff0f0;
+}
+
+.upload-icon {
+  color: #fe4747;
+  margin-bottom: 1rem;
+}
+
+.upload-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.upload-subtext {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.file-input {
+  display: none;
+}
+
+.selected-file {
+  font-size: 0.9rem;
+  color: #2b00ff;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-file {
+  background: none;
+  border: none;
+  color: #ff3838;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-file svg {
+  width: 20px; /* Increased from default size */
+  height: 20px; /* Increased from default size */
+}
+
+.delete-file:hover {
+  color: #ff0000;
+}
+
+.upload-button {
+  background-color: #ff7575;
+  color: white;
+  border: none;
+  padding: 0.75rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1rem; /* Reduced from 3rem to 1rem */
+}
+
+.upload-button:hover {
+  background-color: #ff3131;
+}
+
+.features {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem; /* Reduced from 3rem to 1rem */
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #000000;
+}
+
+.feature svg {
+  margin-right: 0.5rem;
+  color: #ff3c3c;
+}
+
+.instruction-section {
+  background-color: rgba(254, 246, 232, 0.8);
+  padding: 3rem;
+  border-radius: 60px;
+  max-width: 1300px;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.instruction-title {
+  font-size: 2rem;
+  color: #4a4a4a;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.instruction-blocks {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.instruction-block {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 30px;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.instruction-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.instruction-icon {
+  background-color: #fff0f0;
+  color: #ff1212;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.5rem;
+}
+
+.instruction-block-title {
+  font-size: 1.3rem;
+  color: #4a4a4a;
+  margin-bottom: 1rem;
+}
+
+.instruction-block-description {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.beta-info-section {
+  background-color: rgba(254, 246, 232, 0.8);
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.beta-info-content {
+  text-align: center;
+}
+
+.beta-info-title {
+  font-size: 1.8rem;
+  color: #4a4a4a;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beta-info-title svg {
+  margin-right: 0.5rem;
+  color: #d41717;
+}
+
+.beta-info-text {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.beta-info-highlight {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ff0000;
+}
+
+/* Footer Styles */
+.footer {
+  background-color: rgba(254, 246, 232, 0.8);
+  padding: 1rem 2rem;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer p {
+  margin: 0;
+  color: #4a4a4a;
+}
+
+.footer-nav a {
+  color: #4a4a4a;
+  text-decoration: none;
+  margin-left: 1rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+  color: #ff4d4d;
+}
+
+.onlyfans-twin-announcement {
+  background-color: rgba(
+    71,
+    169,
+    255,
+    0.9
+  ); /* Tomato color with some transparency */
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(255, 99, 71, 0.3);
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.onlyfans-twin-announcement h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-container {
+    padding: 1rem;
+    padding-top: 60px; /* Adjust for smaller screens */
+  }
+
+  .hero-content {
+    padding: 2rem;
+    margin-top: -2%; /* Less shift on smaller screens */
+  }
+
+  .instruction-section,
+  .beta-info-section {
+    padding: 2rem;
+  }
+
+  .instruction-blocks {
+    flex-direction: column;
+  }
+
+  .footer {
+    padding: 1rem;
+  }
+
+  .footer {
+    padding: 1rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-nav {
+    margin-top: 0.5rem;
+  }
+
+  .footer-nav a {
+    margin: 0.5rem;
+  }
+
+  .hero-skinny-description {
+    font-size: 1rem;
+  }
+
+  .hero-database-text {
+    font-size: 1.8rem;
+  }
+}

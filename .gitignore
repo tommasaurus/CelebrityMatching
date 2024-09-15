@@ -13,3 +13,6 @@ app/db/images/csv/onlyfans_data.csv
 
 # Ignore the test images
 app/services/images/
+
+node_modules/
+.DS_Store

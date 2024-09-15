@@ -1,0 +1,212 @@
+.contact-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-container {
+  background-image: url("/Users/RDua/Desktop/a/Code/Frontend/background.jpg");
+  background-size: cover;
+  background-position: center;
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  padding-top: 80px;
+  color: rgb(231, 57, 57);
+}
+
+.contact-content {
+  background-color: rgba(248, 241, 225, 0.9);
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  max-width: 550px;
+  width: 100%;
+}
+
+.contact-title,
+.donate-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4a4a4a;
+  margin-bottom: 0.5rem;
+}
+
+.contact-subtitle,
+.donate-subtitle {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #4a4a4a;
+  font-size: 1rem;
+}
+
+.form-input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+textarea.form-input {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.submit-button,
+.donate-now-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.submit-button:hover,
+.donate-now-button:hover {
+  background-color: #ff3131;
+}
+
+.submit-button svg {
+  margin-right: 0.5rem;
+}
+
+.donate-section {
+  margin-top: 2rem;
+  background-color: rgba(237, 206, 187, 0.8);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.donate-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.donate-option {
+  height: 48px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid #f0f0f0;
+  background-color: #ffffff;
+  color: #4a4a4a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.donate-option:hover {
+  border-color: #ff4d4d;
+}
+
+.donate-option.selected {
+  background-color: #ff4d4d;
+  border-color: #ff4d4d;
+  color: white;
+}
+
+.donate-now-button {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.success-message {
+  background-color: #4caf50;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.footer {
+  background-color: rgba(254, 246, 232, 0.8);
+  padding: 1rem 2rem;
+  margin-top: auto;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer p {
+  margin: 0;
+  color: #4a4a4a;
+}
+
+.footer-nav a {
+  color: #4a4a4a;
+  text-decoration: none;
+  margin-left: 1rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+  color: #ff4d4d;
+}
+
+@media (max-width: 480px) {
+  .contact-content {
+    padding: 1.5rem;
+  }
+
+  .donate-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    padding: 1rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-nav {
+    margin-top: 0.5rem;
+  }
+
+  .footer-nav a {
+    margin: 0 0.5rem;
+  }
+}

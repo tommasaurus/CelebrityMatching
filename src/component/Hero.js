@@ -1,0 +1,202 @@
+import React, { useState, useRef } from "react";
+import {
+  Upload,
+  FileText,
+  Zap,
+  Lock,
+  User,
+  Cpu,
+  CheckCircle,
+  AlertCircle,
+  X,
+} from "lucide-react";
+import "./Hero.css";
+import Navbar from "./Navbar";
+
+const Hero = ({ navigateTo }) => {
+  const [file, setFile] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDeleteFile = () => {
+    setFile(null);
+    fileInputRef.current.value = "";
+  };
+
+  const instructions = [
+    {
+      icon: <User size={32} />,
+      title: "Upload a photo",
+      description:
+        "Use a clear frontal photo with only one person. Face should be clearly visible for best results.",
+    },
+    {
+      icon: <Cpu size={32} />,
+      title: "Face Detection",
+      description:
+        "Our system detects facial features including eyebrows, eyes, nose, and mouth.",
+    },
+    {
+      icon: <CheckCircle size={32} />,
+      title: "Enjoy the result!",
+      description:
+        "Our Neural Network compares your face with celebrities and suggests the most similar ones.",
+    },
+  ];
+
+  return (
+    <>
+      <Navbar navigateTo={navigateTo} />
+
+      <div className='hero-container'>
+        <div className='hero-database-section'>
+          <p className='hero-skinny-description'>
+            Find your identical Star using AI
+          </p>
+          <h2 className='hero-database-text'>Over 500+ Stars!</h2>
+        </div>
+        <div className='hero-content'>
+          <h1 className='hero-title'> Twin</h1>
+          <p className='hero-subtitle'>Must be 18+ to use.</p>
+
+          <div
+            className={`upload-area ${isDragging ? "dragging" : ""}`}
+            onClick={handleUploadClick}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+          >
+            <div className='upload-icon'>
+              <Upload size={48} />
+            </div>
+            <p className='upload-subtext'>
+              {isDragging ? "Drop here" : "Click to browse or drag and drop"}
+            </p>
+            <input
+              type='file'
+              className='file-input'
+              onChange={handleFileChange}
+              ref={fileInputRef}
+              id='file-upload'
+              accept='image/*'
+              style={{ display: "none" }}
+            />
+          </div>
+
+          {file && (
+            <div className='selected-file'>
+              <span>{file.name}</span>
+              <button className='delete-file' onClick={handleDeleteFile}>
+                <X size={16} />
+              </button>
+            </div>
+          )}
+
+          <button className='upload-button'>Find Twin</button>
+
+          <div className='features'>
+            <div className='feature'>
+              <FileText size={20} />
+              <span>No data saved</span>
+            </div>
+            <div className='feature'>
+              <Zap size={20} />
+              <span>AI processing</span>
+            </div>
+            <div className='feature'>
+              <Lock size={20} />
+              <span>Private and Secure</span>
+            </div>
+          </div>
+        </div>
+
+        <div className='instruction-section'>
+          <h2 className='instruction-title'>How It Works</h2>
+          <div className='instruction-blocks'>
+            {instructions.map((instruction, index) => (
+              <div key={index} className='instruction-block'>
+                <div className='instruction-icon'>{instruction.icon}</div>
+                <h3 className='instruction-block-title'>{instruction.title}</h3>
+                <p className='instruction-block-description'>
+                  {instruction.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className='beta-info-section'>
+          <div className='beta-info-content'>
+            <h3 className='beta-info-title'>
+              <AlertCircle size={24} /> Beta Version
+            </h3>
+            <p className='beta-info-text'>
+              We're currently in beta, constantly improving our recognition
+              algorithm. Every request you make helps train our neural network,
+              so please share with friends! We're committed to high accuracy,
+              using multiple angles to create detailed actress templates. Our
+              team works daily to refine the system and correct any errors.
+            </p>
+            <p className='beta-info-highlight'>
+              Exciting news: New stars added weekly!
+            </p>
+          </div>
+        </div>
+        <div className='onlyfans-twin-announcement'>
+          <h2>OnlyfansTwin coming soon...</h2>
+        </div>
+      </div>
+      <footer className='footer'>
+        <div className='footer-content'>
+          <p>&copy; 2024 PornTwin. All rights reserved.</p>
+          <nav className='footer-nav'>
+            <a href='#' onClick={() => navigateTo("contact")}>
+              Contact
+            </a>
+            <a href='#'>Donate</a>
+          </nav>
+        </div>
+      </footer>
+    </>
+  );
+};
+
+export default Hero;
