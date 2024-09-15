@@ -11,8 +11,11 @@ app/db/images/csv/image_data.csv
 app/db/images/csv/celebrity_data.csv
 app/db/images/csv/onlyfans_data.csv
 
-# Ignore the test images
+# Ignore the test and upload images
 app/services/images/
+app/services/uploads/
 
-node_modules/
+client/node_modules/
 .DS_Store
+package-lock.json
+__pycache__/

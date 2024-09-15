@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import axios from "axios";
 import {
   Upload,
   FileText,
@@ -16,6 +17,7 @@ import Navbar from "./Navbar";
 const Hero = ({ navigateTo }) => {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
@@ -58,6 +60,28 @@ const Hero = ({ navigateTo }) => {
   const handleDeleteFile = () => {
     setFile(null);
     fileInputRef.current.value = "";
+  };
+
+  const handleUploadFile = async () => {
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    try {
+      setUploading(true); // Set uploading state
+      const response = await axios.post("http://127.0.0.1:8000/upload-image/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response.data);
+      setUploading(false); // Reset uploading state
+      // Process the response (e.g., display the result)
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setUploading(false); // Reset uploading state
+    }
   };
 
   const instructions = [
@@ -130,7 +154,14 @@ const Hero = ({ navigateTo }) => {
             </div>
           )}
 
-          <button className='upload-button'>Find Twin</button>
+          {/* Upload Button */}
+          <button
+            className='upload-button'
+            onClick={handleUploadFile}
+            disabled={!file || uploading} // Disable if no file or uploading
+          >
+            {uploading ? "Uploading..." : "Find Twin"}
+          </button>
 
           <div className='features'>
             <div className='feature'>
