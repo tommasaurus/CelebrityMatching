@@ -19,9 +19,9 @@
 }
 
 .contact-content {
-  background-color: rgba(248, 241, 225, 0.9);
-  border-radius: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background-color: rgba(248, 241, 225, 0.8);
+  border-radius: 50px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   padding: 2.5rem;
   max-width: 550px;
   width: 100%;
@@ -30,8 +30,8 @@
 .contact-title,
 .donate-title {
   font-size: 2.5rem;
-  font-weight: 700;
-  color: #4a4a4a;
+  font-weight: 800;
+  color: #2f2f2f;
   margin-bottom: 0.5rem;
 }
 
@@ -45,7 +45,7 @@
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2.5rem;
 }
 
 .form-group {
@@ -56,55 +56,76 @@
 .form-group label {
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #4a4a4a;
+  color: #333;
   font-size: 1rem;
 }
 
 .form-input {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: 3px solid rgba(255, 77, 77, 0.3);
+  border-radius: 25px;
   font-size: 1rem;
   width: 100%;
+  max-width: 100%;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 242, 242, 0.7);
+  box-sizing: border-box;
+  box-shadow: 0 10px 2.5px rgba(0, 0, 0, 0.05);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(255, 77, 77, 0.8);
+  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
+  background-color: rgba(255, 242, 242, 0.7);
 }
 
 textarea.form-input {
-  min-height: 100px;
   resize: vertical;
+  font-family: inherit;
 }
 
 .submit-button,
 .donate-now-button {
-  background-color: #ff4d4d;
+  background-color: rgba(255, 77, 77, 0.9);
   color: white;
   border: none;
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  box-shadow: 0 10px 2.5px rgba(0, 0, 0, 0.05);
 }
 
 .submit-button:hover,
 .donate-now-button:hover {
-  background-color: #ff3131;
+  background-color: rgba(255, 49, 49, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(255, 77, 77, 0.3);
 }
 
-.submit-button svg {
+.submit-button:active,
+.donate-now-button:active {
+  transform: translateY(0);
+}
+
+.submit-button svg,
+.donate-now-button svg {
   margin-right: 0.5rem;
 }
 
 .donate-section {
   margin-top: 2rem;
-  background-color: rgba(237, 206, 187, 0.8);
-  border-radius: 12px;
+  background-color: rgba(242, 226, 199, 0.7);
+  border-radius: 25px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .donate-options-grid {
@@ -116,41 +137,40 @@ textarea.form-input {
 
 .donate-option {
   height: 48px;
-  border-radius: 8px;
+  border-radius: 25px;
   font-size: 1rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  border: 2px solid #f0f0f0;
-  background-color: #ffffff;
-  color: #4a4a4a;
+  border: 3px solid rgba(255, 77, 77, 0.3);
+  background-color: rgba(255, 242, 242, 0.7);
+  color: #333;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(132, 0, 0, 0.2);
 }
 
 .donate-option:hover {
-  border-color: #ff4d4d;
+  border-color: rgba(255, 77, 77, 0.8);
+  background-color: rgba(255, 242, 242, 0.7);
 }
 
 .donate-option.selected {
-  background-color: #ff4d4d;
-  border-color: #ff4d4d;
+  background-color: rgba(255, 77, 77, 0.9);
+  border-color: rgba(255, 77, 77, 0.9);
   color: white;
-}
-
-.donate-now-button {
-  width: 100%;
-  margin-top: 1rem;
+  box-shadow: 0 4px 6px rgba(255, 77, 77, 0.2);
 }
 
 .success-message {
-  background-color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.9);
   color: white;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 25px;
   text-align: center;
   margin-bottom: 1rem;
+  box-shadow: 0 4px 6px rgba(255, 77, 77, 0.2);
 }
 
 .footer {
@@ -184,9 +204,13 @@ textarea.form-input {
   color: #ff4d4d;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .contact-content {
     padding: 1.5rem;
+  }
+
+  .form-input {
+    font-size: 0.9rem;
   }
 
   .donate-options-grid {

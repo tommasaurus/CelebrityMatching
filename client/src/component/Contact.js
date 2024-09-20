@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Send } from "lucide-react";
+import { Send, Heart } from "lucide-react";
 import "./Contact.css";
 import Navbar from "./Navbar";
 
@@ -46,32 +46,35 @@ const Contact = ({ navigateTo }) => {
             </div>
           ) : (
             <form className='contact-form' onSubmit={handleSubmit}>
-              <div className='form-group'>
-                <label htmlFor='name'>Name</label>
-                <input
-                  type='text'
-                  id='name'
-                  name='name'
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className='form-input'
-                />
+              <div className='form-row'>
+                <div className='form-group'>
+                  <textarea
+                    type='text'
+                    id='name'
+                    name='name'
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className='form-input'
+                    placeholder='Name'
+                    style={{ maxHeight: "50px" }}
+                  />
+                </div>
+                <div className='form-group'>
+                  <textarea
+                    type='email'
+                    id='email'
+                    name='email'
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className='form-input'
+                    placeholder='Email'
+                    style={{ maxHeight: "50px" }}
+                  />
+                </div>
               </div>
               <div className='form-group'>
-                <label htmlFor='email'>Email</label>
-                <input
-                  type='email'
-                  id='email'
-                  name='email'
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className='form-input'
-                />
-              </div>
-              <div className='form-group'>
-                <label htmlFor='message'>Message</label>
                 <textarea
                   id='message'
                   name='message'
@@ -79,6 +82,8 @@ const Contact = ({ navigateTo }) => {
                   onChange={handleChange}
                   required
                   className='form-input'
+                  placeholder='message'
+                  style={{ minHeight: "120px" }}
                 ></textarea>
               </div>
               <button type='submit' className='submit-button'>
@@ -104,6 +109,7 @@ const Contact = ({ navigateTo }) => {
               ))}
             </div>
             <button className='donate-now-button' onClick={handleDonation}>
+              <Heart size={20} />
               Donate Now
             </button>
           </div>

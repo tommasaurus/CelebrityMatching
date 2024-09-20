@@ -19,19 +19,15 @@ const Hero = ({ navigateTo }) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [topMatchImageName, setTopMatchImageName] = useState(null); 
   const [matches, setMatches] = useState([]);
-  const [uploading, setUploading] = useState(false); // State to track uploading status  
+  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       const uploadedFile = event.target.files[0];
       setFile(uploadedFile);
-
-      // Create a preview URL for the uploaded image
-      const previewUrl = URL.createObjectURL(uploadedFile);
-      setFilePreview(previewUrl);
+      setFilePreview(URL.createObjectURL(uploadedFile));
     }
   };
 
@@ -64,42 +60,40 @@ const Hero = ({ navigateTo }) => {
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const droppedFile = e.dataTransfer.files[0];
       setFile(droppedFile);
-
-      // Create a preview URL for the dropped image
-      const previewUrl = URL.createObjectURL(droppedFile);
-      setFilePreview(previewUrl);
+      setFilePreview(URL.createObjectURL(droppedFile));
     }
   };
 
   const handleDeleteFile = () => {
     setFile(null);
-    setFilePreview(null); // Clear the preview when the file is deleted
+    setFilePreview(null);
     fileInputRef.current.value = "";
   };
 
   const handleUploadFile = async () => {
     if (!file) return;
-  
+
     const formData = new FormData();
     formData.append("file", file);
-  
+
     try {
-      setUploading(true); // Set uploading state
-      const response = await axios.post("http://127.0.0.1:8000/upload-image/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      setUploading(true);
+      const response = await axios.post(
+        "http://127.0.0.1:8000/upload-image/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log(response.data);
-      
-      // Process the response (e.g., display the result)
-      setTopMatchImageName(response.data.top_match_image_url);
-      setMatches(response.data.onlyfans_matches);      
+      setMatches(response.data.onlyfans_matches);
     } catch (error) {
-        console.error("Error uploading image:", error);
+      console.error("Error uploading image:", error);
     } finally {
-        setUploading(false); // End uploading
-    }    
+      setUploading(false);
+    }
   };
 
   const instructions = [
@@ -135,8 +129,8 @@ const Hero = ({ navigateTo }) => {
           <h2 className='hero-database-text'>Over 500+ Stars!</h2>
         </div>
         <div className='hero-content'>
-          <h1 className='hero-title'> Twin</h1>
-          <p className='hero-subtitle'>Must be 18+ to use.</p>
+          <h1 className='hero-title'>Twin</h1>
+          <p className='hero-subtitle'>No data saved. 18+ to use.</p>
 
           <div
             className={`upload-area ${isDragging ? "dragging" : ""}`}
@@ -149,6 +143,7 @@ const Hero = ({ navigateTo }) => {
             <div className='upload-icon'>
               <Upload size={48} />
             </div>
+            <p className='upload-text'>Upload your photo</p>
             <p className='upload-subtext'>
               {isDragging ? "Drop here" : "Click to browse or drag and drop"}
             </p>
@@ -157,7 +152,6 @@ const Hero = ({ navigateTo }) => {
               className='file-input'
               onChange={handleFileChange}
               ref={fileInputRef}
-              id='file-upload'
               accept='image/*'
               style={{ display: "none" }}
             />
@@ -171,11 +165,11 @@ const Hero = ({ navigateTo }) => {
               </button>
             </div>
           )}
-          
+
           <button
             className='upload-button'
             onClick={handleUploadFile}
-            disabled={!file || uploading} // Disable if no file or uploading
+            disabled={!file || uploading}
           >
             {uploading ? "Uploading..." : "Find Twin"}
           </button>
@@ -183,20 +177,11 @@ const Hero = ({ navigateTo }) => {
           {filePreview && (
             <div className='image-preview'>
               <h3>Your Uploaded Image</h3>
-              <img src={filePreview} alt="Uploaded Preview" className="preview-image" />
-            </div>
-          )}
-
-          {matches.length > 0 && (
-            <div className='top-matches'>
-                <h2>Your Top Matches</h2>
-                {matches.map((match, index) => (
-                  <div key={index} className="match">
-                    <ImageDisplay imageName={match.image_path} />
-                    <p>{match.name}</p>
-                    <p>Similarity: {(match.similarity * 100).toFixed(2)}%</p> {/* Display as a percentage */}
-                  </div>
-                ))}
+              <img
+                src={filePreview}
+                alt='Uploaded Preview'
+                className='preview-image'
+              />
             </div>
           )}
 
@@ -215,6 +200,28 @@ const Hero = ({ navigateTo }) => {
             </div>
           </div>
         </div>
+
+        {matches.length > 0 && (
+          <div className='top-matches'>
+            <h2>Your Top Matches</h2>
+            <div className='matches-container'>
+              {matches.slice(0, 3).map((match, index) => (
+                <div key={index} className={`match match-${index + 1}`}>
+                  <ImageDisplay
+                    imageName={match.image_path}
+                    alt={`${match.name} preview`}
+                    width={300}
+                    height={300}
+                  />
+                  <div className='match-content'>
+                    <p>{match.name}</p>
+                    <p>Similarity: {(match.similarity * 100).toFixed(2)}%</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className='instruction-section'>
           <h2 className='instruction-title'>How It Works</h2>
