@@ -17,5 +17,5 @@ app/services/uploads/
 
 client/node_modules/
 .DS_Store
-package-lock.json
+client/package-lock.json
 __pycache__/

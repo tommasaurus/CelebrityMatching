@@ -19,6 +19,7 @@ const Hero = ({ navigateTo }) => {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [topMatchImageName, setTopMatchImageName] = useState(null); 
+  const [matches, setMatches] = useState([]);
   const [uploading, setUploading] = useState(false); // State to track uploading status  
   const fileInputRef = useRef(null);
 
@@ -81,31 +82,12 @@ const Hero = ({ navigateTo }) => {
       
       // Process the response (e.g., display the result)
       setTopMatchImageName(response.data.top_match_image_url);
+      setMatches(response.data.onlyfans_matches);      
     } catch (error) {
         console.error("Error uploading image:", error);
     } finally {
         setUploading(false); // End uploading
     }    
-  };
-
-  const handleFindTwin = async () => {
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-        const response = await axios.post("/upload-image/", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-
-        // Set the top match image name from the response
-        setTopMatchImageName(response.data.top_match_image_name);
-    } catch (error) {
-        console.error("Error uploading image:", error);
-    }
   };
 
   const instructions = [
@@ -191,6 +173,19 @@ const Hero = ({ navigateTo }) => {
                   <h2>Your Top Match</h2>
                   <ImageDisplay imageName={topMatchImageName} />
               </div>
+          )}
+
+          {matches.length > 0 && (
+            <div className='top-matches'>
+                <h2>Your Top Matches</h2>
+                {matches.map((match, index) => (
+                  <div key={index} className="match">
+                    <ImageDisplay imageName={match.image_path} />
+                    <p>{match.name}</p>
+                    <p>Similarity: {(match.similarity * 100).toFixed(2)}%</p> {/* Display as a percentage */}
+                  </div>
+                ))}
+            </div>
           )}
 
           <div className='features'>

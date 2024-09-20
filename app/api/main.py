@@ -24,14 +24,14 @@ UPLOAD_DIRECTORY = "app/services/uploads/"
 os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 IMAGE_DIR = os.path.join("app", "db", "images", "images_onlyfans")
 
-@app.get("/images/{image_name}")
-async def get_image(image_name: str):
+@app.get("/images/{image_path:path}")
+async def get_image(image_path: str):
     # Decode the URL-encoded image_name    
-    image_path = os.path.join(IMAGE_DIR, image_name)
-    print(f"Decoded path: {image_path}")    
+    # image_path = os.path.join(IMAGE_DIR, image_name)    
+    image_path = quote(image_path)
 
     # Check if the image exists
-    if not os.path.isfile(image_path):
+    if not os.path.isfile(image_path):        
         raise HTTPException(status_code=404, detail=f"Image not found: {image_path}")
     
     # Return the image
