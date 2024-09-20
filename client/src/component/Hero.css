@@ -1,6 +1,6 @@
 /* Hero.css */
 .hero-container {
-  background-image: url("/Users/RDua/Desktop/a/Code/Frontend/background.jpg");
+  background-image: url("/Users/tommyqu/CelebrityMatching/client/background.jpg");
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -12,6 +12,15 @@
   padding-top: 80px; /* Adjust based on your navbar height */
   color: rgb(231, 57, 57);
 }
+
+.image-preview img,
+  .match img {
+    max-width: 100%;   /* Ensures the image scales to fit the container */
+    max-height: 500px; /* Set a maximum height to prevent the image from being too tall */
+    object-fit: contain; /* Maintain the aspect ratio and fit the image within the bounds */
+    display: block;    /* Ensure the image doesn't overflow its container */
+    margin: 0 auto;    /* Center the image horizontally */
+  }
 
 .hero-database-section {
   text-align: center;

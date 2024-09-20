@@ -17,6 +17,7 @@ import ImageDisplay from "./ui/ImageDisplay";
 
 const Hero = ({ navigateTo }) => {
   const [file, setFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [topMatchImageName, setTopMatchImageName] = useState(null); 
   const [matches, setMatches] = useState([]);
@@ -25,7 +26,12 @@ const Hero = ({ navigateTo }) => {
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0]);
+      const uploadedFile = event.target.files[0];
+      setFile(uploadedFile);
+
+      // Create a preview URL for the uploaded image
+      const previewUrl = URL.createObjectURL(uploadedFile);
+      setFilePreview(previewUrl);
     }
   };
 
@@ -56,12 +62,18 @@ const Hero = ({ navigateTo }) => {
     setIsDragging(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setFile(e.dataTransfer.files[0]);
+      const droppedFile = e.dataTransfer.files[0];
+      setFile(droppedFile);
+
+      // Create a preview URL for the dropped image
+      const previewUrl = URL.createObjectURL(droppedFile);
+      setFilePreview(previewUrl);
     }
   };
 
   const handleDeleteFile = () => {
     setFile(null);
+    setFilePreview(null); // Clear the preview when the file is deleted
     fileInputRef.current.value = "";
   };
 
@@ -168,11 +180,11 @@ const Hero = ({ navigateTo }) => {
             {uploading ? "Uploading..." : "Find Twin"}
           </button>
 
-          {topMatchImageName && (
-              <div className='top-match'>
-                  <h2>Your Top Match</h2>
-                  <ImageDisplay imageName={topMatchImageName} />
-              </div>
+          {filePreview && (
+            <div className='image-preview'>
+              <h3>Your Uploaded Image</h3>
+              <img src={filePreview} alt="Uploaded Preview" className="preview-image" />
+            </div>
           )}
 
           {matches.length > 0 && (
