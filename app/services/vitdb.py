@@ -6,6 +6,7 @@ import numpy as np
 import psycopg2
 from sklearn.metrics.pairwise import cosine_similarity
 from torchvision.models.vision_transformer import ViT_B_16_Weights
+import heapq
 
 # Set up the device for GPU usage if available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -95,12 +96,16 @@ def find_top_5_similar_from_db(input_img_path, table_name):
 
     # Retrieve the top 5 most similar images and their names
     top_5_matches = [(database_paths[i], database_names[i], similarities[i], database_model_id[i]) for i in top_5_indices]
+
+    # Sort matches based on similarity (x[2]) in descending order
+    top_matches_sorted = sorted(top_5_matches, key=lambda x: x[2], reverse=True)
     
     print(f"Top 5 similar images from {table_name}:")
-    for img_path, name, similarity, model_id in top_5_matches:
+    for img_path, name, similarity, model_id in top_matches_sorted:
         print(f"Image: {img_path}, Name: {name}, Similarity: {similarity}, Model ID: {model_id}")
     
-    return top_5_matches
+    return top_matches_sorted
+
 
 # Function to show images side by side from a specified database table
 def pad_and_show_images_side_by_side(image_paths, table_name, save_path):

@@ -127,7 +127,7 @@ def parse_social_links(social_links_str):
     return social_links
 
 # Load the CSV file with image paths, names, and social media links
-dataset = pd.read_csv('app/db/images/csv/test.csv', header=None, names=['Image File Path', 'Name', 'Social Links'])
+dataset = pd.read_csv('app/db/images/csv/onlyfans_data.csv', header=None, names=['Image File Path', 'Name', 'Social Links'])
 
 # Insert data into the database
 for index, row in dataset.iterrows():

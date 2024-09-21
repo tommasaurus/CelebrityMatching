@@ -16,7 +16,7 @@ service = Service(driver_path)
 driver = webdriver.Chrome(service=service)
 
 # Path to save images
-images_folder = 'app/db/images/test'
+images_folder = 'app/db/images/images_onlyfans'
 os.makedirs(images_folder, exist_ok=True)
 
 # Headers to mimic a real browser request
@@ -180,7 +180,7 @@ def scrape_images(driver):
 
             # Log after each celebrity's images are downloaded
             print(f"Finished downloading images for {name}")
-            save_data_to_csv(image_data, 'app/db/images/csv/test.csv')
+            save_data_to_csv(image_data, 'app/db/images/csv/onlyfans_data.csv')
 
             # After processing the profile, go back to the original page
             driver.back()
