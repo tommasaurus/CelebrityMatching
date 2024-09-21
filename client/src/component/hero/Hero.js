@@ -132,7 +132,7 @@ const Hero = ({ navigateTo }) => {
           <p className='hero-skinny-description'>
             Find your identical Star using AI
           </p>
-          <h2 className='hero-database-text'>Over 500+ Stars!</h2>
+          <h2 className='hero-stars-text'>Over 500+ Stars!</h2>
         </div>
 
         <div className='hero-content'>
