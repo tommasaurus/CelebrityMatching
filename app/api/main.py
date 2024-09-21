@@ -1,11 +1,13 @@
-import os
-from fastapi import FastAPI, File, UploadFile
-from pathlib import Path
-from app.services.vitdb import find_top_5_similar_from_db
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import HTTPException
 from fastapi.responses import FileResponse
-from urllib.parse import unquote, quote
+
+import os
+from pathlib import Path
+from urllib.parse import quote
+
+from app.services.vitdb import find_top_5_similar_from_db
+from app.helpers.db_helper import get_social_links_by_model_id
 
 app = FastAPI()
 
@@ -60,3 +62,17 @@ async def upload_image(file: UploadFile = File(...)):
         "top_match_image_url": top_match_image_name,  # Include the URL of the top match image
         "onlyfans_matches": [{"image_path": match[0], "name": match[1], "similarity": match[2], "model_id": match[3]} for match in onlyfans_results],
     }
+
+@app.get("/get-social-links/{model_id}")
+async def get_social_links(model_id: int):
+    try:
+        # Fetch the social links for the given model_id using db_helper
+        social_links = get_social_links_by_model_id(model_id)
+        
+        if social_links:
+            return {"model_id": model_id, "social_links": social_links}
+        else:
+            raise HTTPException(status_code=404, detail="Model not found")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
