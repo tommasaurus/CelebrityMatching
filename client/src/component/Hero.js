@@ -10,9 +10,11 @@ import {
   CheckCircle,
   AlertCircle,
   X,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import "./Hero.css";
-import Navbar from "./Navbar";
+import { Navbar, Footer } from "./NavbarFooter";
 import ImageDisplay from "./ui/ImageDisplay";
 
 const Hero = ({ navigateTo }) => {
@@ -21,6 +23,7 @@ const Hero = ({ navigateTo }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [matches, setMatches] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [showAllMatches, setShowAllMatches] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
@@ -117,10 +120,13 @@ const Hero = ({ navigateTo }) => {
     },
   ];
 
+  const toggleShowAllMatches = () => {
+    setShowAllMatches(!showAllMatches);
+  };
+
   return (
     <>
       <Navbar navigateTo={navigateTo} />
-
       <div className='hero-container'>
         <div className='hero-database-section'>
           <p className='hero-skinny-description'>
@@ -128,6 +134,7 @@ const Hero = ({ navigateTo }) => {
           </p>
           <h2 className='hero-database-text'>Over 500+ Stars!</h2>
         </div>
+
         <div className='hero-content'>
           <h1 className='hero-title'>Twin</h1>
           <p className='hero-subtitle'>No data saved. 18+ to use.</p>
@@ -205,7 +212,7 @@ const Hero = ({ navigateTo }) => {
           <div className='top-matches'>
             <h2>Your Top Matches</h2>
             <div className='matches-container'>
-              {matches.slice(0, 3).map((match, index) => (
+              {matches.slice(0, showAllMatches ? 5 : 3).map((match, index) => (
                 <div key={index} className={`match match-${index + 1}`}>
                   <ImageDisplay
                     imageName={match.image_path}
@@ -220,6 +227,24 @@ const Hero = ({ navigateTo }) => {
                 </div>
               ))}
             </div>
+            {matches.length > 3 && (
+              <button
+                className='view-more-button'
+                onClick={toggleShowAllMatches}
+              >
+                {showAllMatches ? (
+                  <>
+                    <ChevronUp size={20} />
+                    Show Less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown size={20} />
+                    View More
+                  </>
+                )}
+              </button>
+            )}
           </div>
         )}
 
@@ -259,17 +284,7 @@ const Hero = ({ navigateTo }) => {
           <h2>OnlyfansTwin coming soon...</h2>
         </div>
       </div>
-      <footer className='footer'>
-        <div className='footer-content'>
-          <p>&copy; 2024 PornTwin. All rights reserved.</p>
-          <nav className='footer-nav'>
-            <a href='#' onClick={() => navigateTo("contact")}>
-              Contact
-            </a>
-            <a href='#'>Donate</a>
-          </nav>
-        </div>
-      </footer>
+      <Footer navigateTo={navigateTo} />
     </>
   );
 };
