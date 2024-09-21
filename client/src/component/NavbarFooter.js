@@ -63,15 +63,15 @@ export const Footer = ({ navigateTo }) => {
         </div>
         <div className='footer-section'>
           <h3>Get in touch</h3>
-          <div className='navbar-buttons'>
+          <div className='footer-buttons'>
             <button
-              className='navbar-button'
+              className='footer-button'
               onClick={() => navigateTo("contact")}
             >
               Contact
             </button>
             <button
-              className='navbar-button'
+              className='footer-button'
               onClick={() => navigateTo("donate")}
             >
               Donate
