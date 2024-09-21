@@ -216,6 +216,7 @@ const Hero = ({ navigateTo }) => {
                 <div key={index} className={`match match-${index + 1}`}>
                   <ImageDisplay
                     imageName={match.image_path}
+                    modelId={match.model_id}
                     alt={`${match.name} preview`}
                     width={300}
                     height={300}

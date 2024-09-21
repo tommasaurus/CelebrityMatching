@@ -46,7 +46,7 @@ async def upload_image(file: UploadFile = File(...)):
         buffer.write(await file.read())
 
     # Run the model to find the top 5 similar images in the 'onlyfans_features' table
-    onlyfans_results = find_top_5_similar_from_db(str(upload_path), 'onlyfans_features')
+    onlyfans_results = find_top_5_similar_from_db(str(upload_path), 'vectorized_onlyfans')
 
     # Get the first match from the results
     top_match_image_path = onlyfans_results[0][0]  # This is the image path of the top match
@@ -58,5 +58,5 @@ async def upload_image(file: UploadFile = File(...)):
     # Return the results
     return {
         "top_match_image_url": top_match_image_name,  # Include the URL of the top match image
-        "onlyfans_matches": [{"image_path": match[0], "name": match[1], "similarity": match[2]} for match in onlyfans_results],
+        "onlyfans_matches": [{"image_path": match[0], "name": match[1], "similarity": match[2], "model_id": match[3]} for match in onlyfans_results],
     }
