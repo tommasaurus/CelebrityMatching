@@ -11,6 +11,12 @@ export const Navbar = ({ navigateTo }) => {
         <div className='navbar-buttons'>
           <button
             className='navbar-button'
+            onClick={() => navigateTo("scroll")}
+          >
+            Scroll
+          </button>
+          <button
+            className='navbar-button'
             onClick={() => navigateTo("contact")}
           >
             Contact
@@ -64,6 +70,12 @@ export const Footer = ({ navigateTo }) => {
         <div className='footer-section'>
           <h3>Get in touch</h3>
           <div className='footer-buttons'>
+            <button
+              className='navbar-button'
+              onClick={() => navigateTo("scroll")}
+            >
+              Scroll
+            </button>
             <button
               className='footer-button'
               onClick={() => navigateTo("contact")}

@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 import os
 from pathlib import Path
@@ -8,6 +9,8 @@ from urllib.parse import quote
 
 from app.services.vitdb import find_top_5_similar_from_db
 from app.helpers.db_helper import get_social_links_by_model_id
+
+from app.api.image_routes import router as image_router
 
 app = FastAPI()
 
@@ -18,6 +21,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(image_router)
 
 # Define the upload directory
 UPLOAD_DIRECTORY = "app/services/uploads/"
