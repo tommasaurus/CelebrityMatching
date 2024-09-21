@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function ImageDisplay({ imageName }) {
+function ImageDisplay({ imageName, modelId }) {
     const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {
@@ -12,7 +12,10 @@ function ImageDisplay({ imageName }) {
     return (
         <div className="image-display">
             {imageSrc ? (
-                <img src={imageSrc} alt="Matched Celebrity" />
+                <>
+                    <img src={imageSrc} alt="Matched Celebrity" />                 
+                    <input type="hidden" value={modelId} name="modelId" />
+                </>
             ) : (
                 <p>Loading image...</p>
             )}

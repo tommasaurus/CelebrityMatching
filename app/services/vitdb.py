@@ -46,15 +46,16 @@ def load_database_features(table_name):
     
     try:
         with conn.cursor() as cursor:
-            cursor.execute(f"SELECT img_path, name, feature_vector FROM {table_name};")
+            cursor.execute(f"SELECT img_path, name, feature_vector, model_id FROM {table_name};")
             rows = cursor.fetchall()
 
             database_paths = []
             database_names = []
             database_features = []
+            database_model_id = []
 
             for row in rows:
-                img_path, name, feature_vector_str = row
+                img_path, name, feature_vector_str, model_id = row
                 database_paths.append(img_path)
                 database_names.append(name)
 
@@ -62,7 +63,9 @@ def load_database_features(table_name):
                 feature_vector = np.fromstring(feature_vector_str.strip('[]'), sep=',')
                 database_features.append(feature_vector)
 
-        return np.array(database_features), database_names, database_paths
+                database_model_id.append(model_id)
+
+        return np.array(database_features), database_names, database_paths, database_model_id
 
     except Exception as e:
         print(f"Error loading database features: {e}")
@@ -75,7 +78,7 @@ def load_database_features(table_name):
 # Function to find the top 5 most similar images in the specified database table
 def find_top_5_similar_from_db(input_img_path, table_name):
     # Load the feature vectors and metadata from the specified database table
-    database_features, database_names, database_paths = load_database_features(table_name)
+    database_features, database_names, database_paths, database_model_id = load_database_features(table_name)
     
     if len(database_features) == 0:
         print(f"No features found in the database table: {table_name}")
@@ -91,11 +94,11 @@ def find_top_5_similar_from_db(input_img_path, table_name):
     top_5_indices = np.argsort(similarities)[-5:][::-1]
 
     # Retrieve the top 5 most similar images and their names
-    top_5_matches = [(database_paths[i], database_names[i], similarities[i]) for i in top_5_indices]
+    top_5_matches = [(database_paths[i], database_names[i], similarities[i], database_model_id[i]) for i in top_5_indices]
     
     print(f"Top 5 similar images from {table_name}:")
-    for img_path, name, similarity in top_5_matches:
-        print(f"Image: {img_path}, Name: {name}, Similarity: {similarity}")
+    for img_path, name, similarity, model_id in top_5_matches:
+        print(f"Image: {img_path}, Name: {name}, Similarity: {similarity}, Model ID: {model_id}")
     
     return top_5_matches
 
