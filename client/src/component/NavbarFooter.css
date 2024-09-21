@@ -66,8 +66,13 @@
 }
 
 .footer-section {
-  flex: 1;
-  margin-right: 2rem;
+  text-align: center; /* Center the buttons */
+}
+
+.navbar-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* Space between buttons */
 }
 
 .footer-section h3 {

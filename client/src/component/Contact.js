@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Send, Heart } from "lucide-react";
 import "./Contact.css";
-import Navbar from "./Navbar";
+import { Navbar, Footer } from "./NavbarFooter";
+import "./NavbarFooter.css";
 
 const Contact = ({ navigateTo }) => {
   const [formData, setFormData] = useState({
@@ -10,17 +11,46 @@ const Contact = ({ navigateTo }) => {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [selectedAmount, setSelectedAmount] = useState("");
+  const [submitError, setSubmitError] = useState(null);
+  const [selectedAmount, setSelectedAmount] = useState(null);
+  const [isSending, setIsSending] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitted(true);
+    setSubmitError(null);
+    setIsSending(true);
+
+    const SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbwEynB_XHcmCC2e9Kb1w2EVkMx0ZSzEEAyIjf1GFfOBAn3-bgb5sSP8Jm-T2y1aKpWMMw/exec";
+
+    try {
+      const url = `${SCRIPT_URL}?nom=${encodeURIComponent(
+        formData.name
+      )}&email=${encodeURIComponent(
+        formData.email
+      )}&message=${encodeURIComponent(formData.message)}`;
+      const response = await fetch(url, { method: "POST" });
+      const data = await response.text();
+
+      if (response.ok) {
+        console.log("Form submitted:", formData);
+        setFormData({ name: "", email: "", message: "" });
+        setIsSubmitted(true);
+      } else {
+        throw new Error(data || "Failed to send email");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setSubmitError(
+        "There was an error sending your message. Please try again later."
+      );
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleAmountSelect = (amount) => {
@@ -48,7 +78,7 @@ const Contact = ({ navigateTo }) => {
             <form className='contact-form' onSubmit={handleSubmit}>
               <div className='form-row'>
                 <div className='form-group'>
-                  <textarea
+                  <input
                     type='text'
                     id='name'
                     name='name'
@@ -57,11 +87,10 @@ const Contact = ({ navigateTo }) => {
                     required
                     className='form-input'
                     placeholder='Name'
-                    style={{ maxHeight: "50px" }}
                   />
                 </div>
                 <div className='form-group'>
-                  <textarea
+                  <input
                     type='email'
                     id='email'
                     name='email'
@@ -70,7 +99,6 @@ const Contact = ({ navigateTo }) => {
                     required
                     className='form-input'
                     placeholder='Email'
-                    style={{ maxHeight: "50px" }}
                   />
                 </div>
               </div>
@@ -82,13 +110,20 @@ const Contact = ({ navigateTo }) => {
                   onChange={handleChange}
                   required
                   className='form-input'
-                  placeholder='message'
-                  style={{ minHeight: "120px" }}
-                ></textarea>
+                  placeholder='Message'
+                  rows='4'
+                />
               </div>
-              <button type='submit' className='submit-button'>
+              {submitError && (
+                <div className='error-message'>{submitError}</div>
+              )}
+              <button
+                type='submit'
+                className='submit-button'
+                disabled={isSending}
+              >
                 <Send size={20} />
-                Send Message
+                {isSending ? "Sending..." : "Send Message"}
               </button>
             </form>
           )}
@@ -115,19 +150,7 @@ const Contact = ({ navigateTo }) => {
           </div>
         </div>
       </div>
-      <footer className='footer'>
-        <div className='footer-content'>
-          <p>&copy; 2024 PornTwin. All rights reserved.</p>
-          <nav className='footer-nav'>
-            <a href='#' onClick={() => navigateTo("contact")}>
-              Contact
-            </a>
-            <a href='#' onClick={() => navigateTo("donate")}>
-              Donate
-            </a>
-          </nav>
-        </div>
-      </footer>
+      <Footer navigateTo={navigateTo} /> {/* Add Footer component */}
     </div>
   );
 };

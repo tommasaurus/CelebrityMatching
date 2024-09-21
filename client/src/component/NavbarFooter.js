@@ -1,7 +1,7 @@
 import React from "react";
 import "./NavbarFooter.css";
 
-const Navbar = ({ navigateTo }) => {
+export const Navbar = ({ navigateTo }) => {
   return (
     <nav className='navbar'>
       <div className='navbar-container'>
@@ -27,7 +27,7 @@ const Navbar = ({ navigateTo }) => {
   );
 };
 
-const Footer = ({ navigateTo }) => {
+export const Footer = ({ navigateTo }) => {
   return (
     <footer className='footer'>
       <div className='footer-content'>
@@ -85,5 +85,3 @@ const Footer = ({ navigateTo }) => {
     </footer>
   );
 };
-
-export { Navbar, Footer };

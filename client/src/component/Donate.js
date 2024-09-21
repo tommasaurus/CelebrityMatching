@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { CreditCard, Calendar, Lock, Heart } from "lucide-react";
 import ReactConfetti from "react-confetti";
 import "./Donate.css";
-import Navbar from "./Navbar";
+import { Navbar, Footer } from "./NavbarFooter";
+import "./NavbarFooter.css";
 
 const DonationInput = ({ value, onChange }) => {
   const [inputValue, setInputValue] = useState(value.toString());
@@ -129,7 +130,6 @@ const Donate = ({ navigateTo, location }) => {
   return (
     <div className='donate-page' ref={containerRef}>
       <Navbar navigateTo={navigateTo} />
-
       {showConfetti && (
         <ReactConfetti
           width={containerRef.current?.offsetWidth}
@@ -138,7 +138,6 @@ const Donate = ({ navigateTo, location }) => {
           numberOfPieces={200}
         />
       )}
-
       <div className='donate-container'>
         <div className='donate-content'>
           {isSubmitted ? (
@@ -300,20 +299,7 @@ const Donate = ({ navigateTo, location }) => {
           )}
         </div>
       </div>
-
-      <footer className='footer'>
-        <div className='footer-content'>
-          <p>&copy; 2024 Your Organization. All rights reserved.</p>
-          <nav className='footer-nav'>
-            <a href='#' onClick={() => navigateTo("contact")}>
-              Contact
-            </a>
-            <a href='#' onClick={() => navigateTo("donate")}>
-              Donate
-            </a>
-          </nav>
-        </div>
-      </footer>
+      <Footer navigateTo={navigateTo} /> {/* Add Footer component */}
     </div>
   );
 };

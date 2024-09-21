@@ -1,21 +1,20 @@
 .contact-page {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .contact-container {
+  flex: 1;
   background-image: url("/Users/RDua/Desktop/a/Code/Frontend/background.jpg");
   background-size: cover;
   background-position: center;
-  min-height: 92vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  padding-top: 80px;
   color: rgb(231, 57, 57);
+  overflow: hidden;
 }
 
 .contact-content {
@@ -25,6 +24,8 @@
   padding: 2.5rem;
   max-width: 550px;
   width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .contact-title,
@@ -53,24 +54,26 @@
   flex-direction: column;
 }
 
-.form-group label {
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #333;
-  font-size: 1rem;
-}
-
 .form-input {
   padding: 0.75rem 1rem;
   border: 3px solid rgba(255, 77, 77, 0.3);
   border-radius: 25px;
   font-size: 1rem;
   width: 100%;
-  max-width: 100%;
   transition: all 0.3s ease;
   background-color: rgba(255, 242, 242, 0.7);
   box-sizing: border-box;
   box-shadow: 0 10px 2.5px rgba(0, 0, 0, 0.05);
+}
+
+input.form-input {
+  height: 45px;
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 110px;
+  max-height: 300px;
 }
 
 .form-input:focus {
@@ -173,37 +176,6 @@ textarea.form-input {
   box-shadow: 0 4px 6px rgba(255, 77, 77, 0.2);
 }
 
-.footer {
-  background-color: rgba(254, 246, 232, 0.8);
-  padding: 1rem 2rem;
-  margin-top: auto;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer p {
-  margin: 0;
-  color: #4a4a4a;
-}
-
-.footer-nav a {
-  color: #4a4a4a;
-  text-decoration: none;
-  margin-left: 1rem;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
-.footer-nav a:hover {
-  color: #ff4d4d;
-}
-
 @media (max-width: 520px) {
   .contact-content {
     padding: 1.5rem;
@@ -215,22 +187,5 @@ textarea.form-input {
 
   .donate-options-grid {
     grid-template-columns: 1fr;
-  }
-
-  .footer {
-    padding: 1rem;
-  }
-
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .footer-nav {
-    margin-top: 0.5rem;
-  }
-
-  .footer-nav a {
-    margin: 0 0.5rem;
   }
 }
