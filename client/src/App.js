@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
-import Hero from "./component/Hero";
-import Contact from "./component/Contact";
-import Donate from "./component/Donate";
+import Hero from "./component/hero/Hero";
+import Contact from "./component/contact/Contact";
+import Donate from "./component/donate/Donate";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");

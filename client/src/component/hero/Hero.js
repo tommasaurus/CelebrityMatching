@@ -14,8 +14,8 @@ import {
   ChevronUp,
 } from "lucide-react";
 import "./Hero.css";
-import { Navbar, Footer } from "./NavbarFooter";
-import ImageDisplay from "./ui/ImageDisplay";
+import { Navbar, Footer } from "../navbar/NavbarFooter";
+import ImageDisplay from "../ui/ImageDisplay";
 
 const Hero = ({ navigateTo }) => {
   const [file, setFile] = useState(null);

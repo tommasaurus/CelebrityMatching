@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Send, Heart } from "lucide-react";
 import "./Contact.css";
-import { Navbar, Footer } from "./NavbarFooter";
-import "./NavbarFooter.css";
+import { Navbar, Footer } from "../navbar/NavbarFooter";
+import "../navbar/NavbarFooter.css";
 
 const Contact = ({ navigateTo }) => {
   const [formData, setFormData] = useState({

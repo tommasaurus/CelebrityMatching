@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { CreditCard, Calendar, Lock, Heart } from "lucide-react";
 import ReactConfetti from "react-confetti";
 import "./Donate.css";
-import { Navbar, Footer } from "./NavbarFooter";
-import "./NavbarFooter.css";
+import { Navbar, Footer } from "../navbar/NavbarFooter";
+import "../navbar/NavbarFooter.css";
 
 const DonationInput = ({ value, onChange }) => {
   const [inputValue, setInputValue] = useState(value.toString());
