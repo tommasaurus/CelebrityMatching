@@ -6,14 +6,14 @@ export const Navbar = ({ navigateTo }) => {
     <nav className='navbar'>
       <div className='navbar-container'>
         <a href='#' className='navbar-logo' onClick={() => navigateTo("home")}>
-          PornTwin
+          OnlyFaceFinder
         </a>
         <div className='navbar-buttons'>
           <button
             className='navbar-button'
             onClick={() => navigateTo("scroll")}
           >
-            Scroll
+            Gallery
           </button>
           <button
             className='navbar-button'
@@ -41,13 +41,13 @@ export const Footer = ({ navigateTo }) => {
           <h3>Product</h3>
           <ul>
             <li>
-              <a href='#' onClick={() => navigateTo("twin")}>
-                Twin
+              <a href='#' onClick={() => navigateTo("home")}>
+                OnlyFans
               </a>
             </li>
             <li>
-              <a href='#' onClick={() => navigateTo("onlyfans")}>
-                OnlyFans
+              <a href='#' onClick={() => navigateTo("scroll")}>
+                Gallery
               </a>
             </li>
           </ul>
@@ -71,12 +71,6 @@ export const Footer = ({ navigateTo }) => {
           <h3>Get in touch</h3>
           <div className='footer-buttons'>
             <button
-              className='navbar-button'
-              onClick={() => navigateTo("scroll")}
-            >
-              Scroll
-            </button>
-            <button
               className='footer-button'
               onClick={() => navigateTo("contact")}
             >
@@ -92,7 +86,7 @@ export const Footer = ({ navigateTo }) => {
         </div>
       </div>
       <div className='footer-bottom'>
-        <p>&copy; 2024 PornTwin. All rights reserved.</p>
+        <p>&copy; 2024 OnlyFaceFinder. All rights reserved.</p>
       </div>
     </footer>
   );

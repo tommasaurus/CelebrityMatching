@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import {
   Upload,
@@ -10,21 +10,40 @@ import {
   CheckCircle,
   AlertCircle,
   X,
-  ChevronDown,
   ChevronUp,
+  Loader,
+  ChevronDownCircle,
+  ChevronDownCircleIcon,
+  ChevronDownSquare,
+  LucideChevronsDown,
+  ChevronUpCircle,
 } from "lucide-react";
 import "./Hero.css";
 import { Navbar, Footer } from "../navbar/NavbarFooter";
 import ImageDisplay from "../ui/ImageDisplay";
+import MatchPopup from "../MatchPopup/MatchPopup";
 
 const Hero = ({ navigateTo }) => {
+  const [selectedMatch, setSelectedMatch] = useState(null);
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [matches, setMatches] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [showAllMatches, setShowAllMatches] = useState(false);
+  const [conversionCount, setConversionCount] = useState(12465);
+  const [fileSize, setFileSize] = useState(64);
+  const [showViewMatchesButton, setShowViewMatchesButton] = useState(false);
   const fileInputRef = useRef(null);
+  const matchesRef = useRef(null);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setConversionCount((prevCount) => prevCount + 1);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -70,6 +89,7 @@ const Hero = ({ navigateTo }) => {
   const handleDeleteFile = () => {
     setFile(null);
     setFilePreview(null);
+    setShowViewMatchesButton(false);
     fileInputRef.current.value = "";
   };
 
@@ -81,6 +101,7 @@ const Hero = ({ navigateTo }) => {
 
     try {
       setUploading(true);
+      setShowViewMatchesButton(false);
       const response = await axios.post(
         "http://127.0.0.1:8000/upload-image/",
         formData,
@@ -92,11 +113,35 @@ const Hero = ({ navigateTo }) => {
       );
       console.log(response.data);
       setMatches(response.data.onlyfans_matches);
+      setShowViewMatchesButton(true);
     } catch (error) {
       console.error("Error uploading image:", error);
     } finally {
       setUploading(false);
     }
+  };
+
+  const scrollToMatches = () => {
+    if (matchesRef.current) {
+      const yOffset = -100; // Adjust this value to control how far up from the matches the scroll stops
+      const y =
+        matchesRef.current.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
+  const toggleShowAllMatches = () => {
+    setShowAllMatches(!showAllMatches);
+  };
+
+  const handleMatchClick = (match) => {
+    setSelectedMatch(match);
+  };
+
+  const closeMatchPopup = () => {
+    setSelectedMatch(null);
   };
 
   const instructions = [
@@ -120,23 +165,19 @@ const Hero = ({ navigateTo }) => {
     },
   ];
 
-  const toggleShowAllMatches = () => {
-    setShowAllMatches(!showAllMatches);
-  };
-
   return (
     <>
       <Navbar navigateTo={navigateTo} />
       <div className='hero-container'>
         <div className='hero-database-section'>
           <p className='hero-skinny-description'>
-            Find your identical Star using AI
+            Find your OnlyFans Model look-alike using AI.
           </p>
-          <h2 className='hero-stars-text'>Over 500+ Stars!</h2>
+          <h2 className='hero-stars-text'>Over 500+ Models!</h2>
         </div>
 
         <div className='hero-content'>
-          <h1 className='hero-title'>Twin</h1>
+          <h1 className='hero-title'>OnlyFans Finder</h1>
           <p className='hero-subtitle'>No data saved. 18+ to use.</p>
 
           <div
@@ -178,8 +219,23 @@ const Hero = ({ navigateTo }) => {
             onClick={handleUploadFile}
             disabled={!file || uploading}
           >
-            {uploading ? "Uploading..." : "Find Twin"}
+            {uploading ? "Uploading..." : "Find Model"}
           </button>
+
+          {uploading && (
+            <div className='loading-spinner'>
+              <Loader size={24} />
+            </div>
+          )}
+
+          {showViewMatchesButton && (
+            <button
+              className='view-matches-button pulsating'
+              onClick={scrollToMatches}
+            >
+              View Matches
+            </button>
+          )}
 
           {filePreview && (
             <div className='image-preview'>
@@ -209,11 +265,15 @@ const Hero = ({ navigateTo }) => {
         </div>
 
         {matches.length > 0 && (
-          <div className='top-matches'>
+          <div className='top-matches' ref={matchesRef}>
             <h2>Your Top Matches</h2>
             <div className='matches-container'>
               {matches.slice(0, showAllMatches ? 5 : 3).map((match, index) => (
-                <div key={index} className={`match match-${index + 1}`}>
+                <div
+                  key={index}
+                  className={`match match-${index + 1}`}
+                  onClick={() => handleMatchClick(match)}
+                >
                   <ImageDisplay
                     imageName={match.image_path}
                     modelId={match.model_id}
@@ -235,12 +295,12 @@ const Hero = ({ navigateTo }) => {
               >
                 {showAllMatches ? (
                   <>
-                    <ChevronUp size={20} />
+                    <ChevronUpCircle size={20} />
                     Show Less
                   </>
                 ) : (
                   <>
-                    <ChevronDown size={20} />
+                    <ChevronDownCircle size={20} />
                     View More
                   </>
                 )}
@@ -248,6 +308,28 @@ const Hero = ({ navigateTo }) => {
             )}
           </div>
         )}
+
+        <div className='conversion-stats'>
+          <p>
+            We've already converted{" "}
+            <span className='animated-number'>
+              {conversionCount.toLocaleString()}
+            </span>{" "}
+            files with a total size of{" "}
+            <span className='animated-number'>{fileSize.toLocaleString()}</span>{" "}
+            TB.
+          </p>
+        </div>
+
+        <div className='gallery-promo'>
+          <p>View our database with over 15,000 images!</p>
+          <button
+            className='view-gallery-button pulsating'
+            onClick={() => navigateTo("scroll")}
+          >
+            View Gallery
+          </button>
+        </div>
 
         <div className='instruction-section'>
           <h2 className='instruction-title'>How It Works</h2>
@@ -277,14 +359,14 @@ const Hero = ({ navigateTo }) => {
               team works daily to refine the system and correct any errors.
             </p>
             <p className='beta-info-highlight'>
-              Exciting news: New stars added weekly!
+              Exciting news: New models added weekly!
             </p>
           </div>
         </div>
-        <div className='onlyfans-twin-announcement'>
-          <h2>OnlyfansTwin coming soon...</h2>
-        </div>
       </div>
+      {selectedMatch && (
+        <MatchPopup match={selectedMatch} onClose={closeMatchPopup} />
+      )}
       <Footer navigateTo={navigateTo} />
     </>
   );

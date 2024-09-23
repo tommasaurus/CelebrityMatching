@@ -1,0 +1,136 @@
+.match-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.match-popup-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.match-popup-content {
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.match-popup-content.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.match-popup-image {
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.match-popup-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.match-popup-info {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.match-popup-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.match-popup-close:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.match-popup-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.social-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.social-button span {
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .match-popup-content {
+    flex-direction: column;
+    max-width: 95%;
+    max-height: 95vh;
+  }
+
+  .match-popup-image {
+    max-width: 100%;
+    height: 50vh;
+  }
+
+  .match-popup-info {
+    padding: 1rem;
+  }
+
+  .social-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}

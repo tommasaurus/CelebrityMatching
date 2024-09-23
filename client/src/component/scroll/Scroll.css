@@ -7,7 +7,7 @@
 
 .scroll-container {
   flex: 1;
-  background-image: url("/Users/tommyqu/CelebrityMatching/client/background.jpg");
+  background-image: url("/Users/RDua/Desktop/a/Code/CelebrityMatching/client/background.jpg");
   background-repeat: repeat-y; /* Repeat the background vertically */
   background-size: auto; /* Do not stretch the image, use its original size */
   background-position: center top; /* Align the background at the top center */
@@ -20,7 +20,11 @@
 }
 
 .image-gallery-wrapper {
-  background-color: white; /* White background behind the entire gallery */
+  background-color: rgb(
+    251,
+    238,
+    235
+  ); /* White background behind the entire gallery */
   border-radius: 15px;
   width: 50%; /* Adjust the width of the white strip */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -37,7 +41,7 @@
 .image-wrapper {
   background-color: white;
   border-radius: 100px;
-  box-shadow: 0 4px 40px rgba(255, 158, 200, 0.6); /* Add subtle shadow for depth */
+  box-shadow: 0 4px 20px #00aff0; /* Add subtle shadow for depth */
   width: 85%; /* Adjust width to control the white strip */
   margin-bottom: 2rem;
   padding: 1rem;
@@ -54,23 +58,23 @@
 
 .image-wrapper p {
   font-size: 2.5rem;
-  font-family: 'Roboto', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Roboto", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+    sans-serif;
   font-weight: 600;
-  color: rgb(245, 113, 170);
+  color: #00aff0;
   margin-top: 1rem;
   text-transform: capitalize;
 }
 
 .scroll-title {
   font-size: 4rem;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 600;
-  color: rgb(245, 113, 170);
+  color: #00aff0;
   margin-top: 1rem;
   margin-bottom: 3rem;
   text-transform: capitalize;
 }
-
 
 .loading-indicator {
   text-align: center;
