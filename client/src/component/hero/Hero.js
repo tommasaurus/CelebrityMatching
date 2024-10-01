@@ -1,27 +1,24 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
   Upload,
   FileText,
   Zap,
   Lock,
-  User,
-  Cpu,
+  ChevronLeft,
+  ChevronRight,
   CheckCircle,
   AlertCircle,
   X,
-  ChevronUp,
   Loader,
   ChevronDownCircle,
-  ChevronDownCircleIcon,
-  ChevronDownSquare,
-  LucideChevronsDown,
   ChevronUpCircle,
 } from "lucide-react";
 import "./Hero.css";
-import { Navbar, Footer } from "../navbar/NavbarFooter";
 import ImageDisplay from "../ui/ImageDisplay";
 import MatchPopup from "../MatchPopup/MatchPopup";
+import logo from "/Users/RDua/Desktop/a/Code/CelebrityMatching/client/src/OFlogo.png";
+import Contact from "../contact/Contact";
 
 const Hero = ({ navigateTo }) => {
   const [selectedMatch, setSelectedMatch] = useState(null);
@@ -36,12 +33,27 @@ const Hero = ({ navigateTo }) => {
   const [showViewMatchesButton, setShowViewMatchesButton] = useState(false);
   const fileInputRef = useRef(null);
   const matchesRef = useRef(null);
+  const galleryRef = useRef(null);
+
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isHoveringCaption, setIsHoveringCaption] = useState(false);
+  const carouselImages = [
+    { src: "emma.png", name: "Emma Watson" },
+    { src: "irina.png", name: "Irina Shayk" },
+    { src: "scarlett.png", name: "Scarlett Johansson" },
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setConversionCount((prevCount) => prevCount + 1);
     }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % carouselImages.length);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -54,7 +66,7 @@ const Hero = ({ navigateTo }) => {
   };
 
   const handleUploadClick = () => {
-    fileInputRef.current.click();
+    fileInputRef.current?.click();
   };
 
   const handleDragEnter = (e) => {
@@ -90,7 +102,9 @@ const Hero = ({ navigateTo }) => {
     setFile(null);
     setFilePreview(null);
     setShowViewMatchesButton(false);
-    fileInputRef.current.value = "";
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleUploadFile = async () => {
@@ -121,17 +135,6 @@ const Hero = ({ navigateTo }) => {
     }
   };
 
-  const scrollToMatches = () => {
-    if (matchesRef.current) {
-      const yOffset = -100; // Adjust this value to control how far up from the matches the scroll stops
-      const y =
-        matchesRef.current.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
-
   const toggleShowAllMatches = () => {
     setShowAllMatches(!showAllMatches);
   };
@@ -144,126 +147,172 @@ const Hero = ({ navigateTo }) => {
     setSelectedMatch(null);
   };
 
-  const instructions = [
-    {
-      icon: <User size={32} />,
-      title: "Upload a photo",
-      description:
-        "Use a clear frontal photo with only one person. Face should be clearly visible for best results.",
-    },
-    {
-      icon: <Cpu size={32} />,
-      title: "Face Detection",
-      description:
-        "Our system detects facial features including eyebrows, eyes, nose, and mouth.",
-    },
-    {
-      icon: <CheckCircle size={32} />,
-      title: "Enjoy the result!",
-      description:
-        "Our Neural Network compares your face with celebrities and suggests the most similar ones.",
-    },
-  ];
+  const handleNext = (e) => {
+    e.stopPropagation();
+    setCurrentImage((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    setCurrentImage(
+      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
+    );
+  };
+
+  const handleCarouselImageClick = async (imageSrc, imageName) => {
+    if (!isHoveringCaption) {
+      try {
+        setUploading(true);
+        const response = await fetch(imageSrc);
+        const blob = await response.blob();
+        const file = new File(
+          [blob],
+          `${imageName.toLowerCase().replace(" ", "_")}.png`,
+          { type: "image/png" }
+        );
+        setFile(file);
+        setFilePreview(URL.createObjectURL(file));
+        await handleUploadFile();
+      } catch (error) {
+        console.error("Error uploading carousel image:", error);
+      } finally {
+        setUploading(false);
+      }
+    }
+  };
+
+  const handleGalleryClick = () => {
+    navigateTo("scroll");
+  };
 
   return (
     <>
-      <Navbar navigateTo={navigateTo} />
       <div className='hero-container'>
-        <div className='hero-database-section'>
-          <p className='hero-skinny-description'>
-            Find your OnlyFans Model look-alike using AI.
-          </p>
-          <h2 className='hero-stars-text'>Over 500+ Models!</h2>
-        </div>
-
-        <div className='hero-content'>
-          <h1 className='hero-title'>OnlyFans Finder</h1>
-          <p className='hero-subtitle'>No data saved. 18+ to use.</p>
-
-          <div
-            className={`upload-area ${isDragging ? "dragging" : ""}`}
-            onClick={handleUploadClick}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-          >
-            <div className='upload-icon'>
-              <Upload size={48} />
+        <img src={logo} alt='Logo' className='hero-logo' />
+        <p className='hero-subtitle'>
+          Find your OnlyFans Model doppelgänger by uploading your portrait.
+        </p>
+        {!filePreview ? (
+          <div className='hero-content'>
+            <div className='upload-section'>
+              <div
+                className={`upload-area ${isDragging ? "dragging" : ""}`}
+                onClick={handleUploadClick}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+              >
+                <div className='upload-icon'>
+                  <Upload size={48} />
+                </div>
+                <p className='upload-text'>Upload your photo</p>
+                <p className='upload-subtext'>
+                  Click to browse or drag and drop
+                </p>
+                <input
+                  type='file'
+                  className='file-input'
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
+                  accept='image/*'
+                  style={{ display: "none" }}
+                />
+              </div>
             </div>
-            <p className='upload-text'>Upload your photo</p>
-            <p className='upload-subtext'>
-              {isDragging ? "Drop here" : "Click to browse or drag and drop"}
-            </p>
-            <input
-              type='file'
-              className='file-input'
-              onChange={handleFileChange}
-              ref={fileInputRef}
-              accept='image/*'
-              style={{ display: "none" }}
-            />
-          </div>
 
-          {file && (
-            <div className='selected-file'>
-              <span>{file.name}</span>
+            <div className='or-divider'>
+              <div className='or-line'></div>
+              <div className='or-text'>OR</div>
+              <div className='or-line'></div>
+            </div>
+
+            <div className='carousel-section'>
+              <div className='carousel'>
+                {carouselImages.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`carousel-item ${
+                      currentImage === index ? "active" : ""
+                    }`}
+                    onClick={() =>
+                      handleCarouselImageClick(image.src, image.name)
+                    }
+                  >
+                    <img
+                      src={image.src}
+                      alt={`Carousel ${index + 1}`}
+                      className='carousel-image'
+                    />
+                    <div
+                      className='carousel-caption'
+                      onMouseEnter={() => setIsHoveringCaption(true)}
+                      onMouseLeave={() => setIsHoveringCaption(false)}
+                    >
+                      <button className='carousel-btn' onClick={handlePrev}>
+                        <ChevronLeft size={24} />
+                      </button>
+                      <span className='carousel-name'>{image.name}</span>
+                      <button className='carousel-btn' onClick={handleNext}>
+                        <ChevronRight size={24} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className='uploaded-image-container'>
+            <h3 className='uploaded-image-title'>Your uploaded image:</h3>
+            <img
+              src={filePreview}
+              alt='Uploaded Preview'
+              className='uploaded-image'
+            />
+            <div className='file-name-container'>
+              <span className='file-name'>{file.name}</span>
               <button className='delete-file' onClick={handleDeleteFile}>
                 <X size={16} />
               </button>
             </div>
-          )}
-
-          <button
-            className='upload-button'
-            onClick={handleUploadFile}
-            disabled={!file || uploading}
-          >
-            {uploading ? "Uploading..." : "Find Model"}
-          </button>
-
-          {uploading && (
-            <div className='loading-spinner'>
-              <Loader size={24} />
+          </div>
+        )}
+        <div className='action-buttons'>
+          {file && !filePreview && (
+            <div className='selected-file'>
+              <span>{file.name}</span>
             </div>
           )}
-
-          {showViewMatchesButton && (
+          {file && (
             <button
-              className='view-matches-button pulsating'
-              onClick={scrollToMatches}
+              className='upload-button'
+              onClick={handleUploadFile}
+              disabled={uploading}
             >
-              View Matches
+              {uploading ? "Uploading..." : "Find Model"}
             </button>
           )}
-
-          {filePreview && (
-            <div className='image-preview'>
-              <h3>Your Uploaded Image</h3>
-              <img
-                src={filePreview}
-                alt='Uploaded Preview'
-                className='preview-image'
-              />
-            </div>
-          )}
-
-          <div className='features'>
-            <div className='feature'>
-              <FileText size={20} />
-              <span>No data saved</span>
-            </div>
-            <div className='feature'>
-              <Zap size={20} />
-              <span>AI processing</span>
-            </div>
-            <div className='feature'>
-              <Lock size={20} />
-              <span>Private and Secure</span>
-            </div>
+        </div>
+        {uploading && (
+          <div className='loading-spinner'>
+            <Loader size={24} />
+          </div>
+        )}
+        <div className='features'>
+          <div className='feature'>
+            <FileText size={20} />
+            <span>No data saved</span>
+          </div>
+          <div className='feature'>
+            <Zap size={20} />
+            <span>AI processing</span>
+          </div>
+          <div className='feature'>
+            <Lock size={20} />
+            <span>Private and Secure</span>
           </div>
         </div>
-
         {matches.length > 0 && (
           <div className='top-matches' ref={matchesRef}>
             <h2>Your Top Matches</h2>
@@ -308,7 +357,6 @@ const Hero = ({ navigateTo }) => {
             )}
           </div>
         )}
-
         <div className='conversion-stats'>
           <p>
             We've already converted{" "}
@@ -320,21 +368,38 @@ const Hero = ({ navigateTo }) => {
             TB.
           </p>
         </div>
-
-        <div className='gallery-promo'>
-          <p>View our database with over 15,000 images!</p>
-          <button
-            className='view-gallery-button pulsating'
-            onClick={() => navigateTo("scroll")}
-          >
-            View Gallery
-          </button>
+        <div className='gallery-stats'>
+          <p>
+            View our gallery with{" "}
+            <span className='animated-number'>15,000+</span> images{" "}
+            <button className='gallery-button' onClick={handleGalleryClick}>
+              Gallery
+            </button>
+          </p>
         </div>
-
         <div className='instruction-section'>
           <h2 className='instruction-title'>How It Works</h2>
           <div className='instruction-blocks'>
-            {instructions.map((instruction, index) => (
+            {[
+              {
+                icon: <Upload size={32} />,
+                title: "Upload a photo",
+                description:
+                  "Use a clear frontal photo with only one person. Face should be clearly visible for best results.",
+              },
+              {
+                icon: <ChevronRight size={32} />,
+                title: "Face Detection",
+                description:
+                  "Our system detects facial features including eyebrows, eyes, nose, and mouth.",
+              },
+              {
+                icon: <CheckCircle size={32} />,
+                title: "Enjoy the result!",
+                description:
+                  "Our Neural Network compares your face with celebrities and suggests the most similar ones.",
+              },
+            ].map((instruction, index) => (
               <div key={index} className='instruction-block'>
                 <div className='instruction-icon'>{instruction.icon}</div>
                 <h3 className='instruction-block-title'>{instruction.title}</h3>
@@ -345,29 +410,28 @@ const Hero = ({ navigateTo }) => {
             ))}
           </div>
         </div>
-
         <div className='beta-info-section'>
-          <div className='beta-info-content'>
-            <h3 className='beta-info-title'>
-              <AlertCircle size={24} /> Beta Version
-            </h3>
-            <p className='beta-info-text'>
-              We're currently in beta, constantly improving our recognition
-              algorithm. Every request you make helps train our neural network,
-              so please share with friends! We're committed to high accuracy,
-              using multiple angles to create detailed actress templates. Our
-              team works daily to refine the system and correct any errors.
-            </p>
-            <p className='beta-info-highlight'>
-              Exciting news: New models added weekly!
-            </p>
-          </div>
+          <h3 className='beta-info-title'>
+            <AlertCircle size={24} /> Beta Version
+          </h3>
+          <p className='beta-info-text'>
+            We're currently in beta, constantly improving our recognition
+            algorithm. Every request you make helps train our neural network, so
+            please share with friends! We're committed to high accuracy, using
+            multiple angles to create detailed actress templates. Our team works
+            daily to refine the system and correct any errors.
+          </p>
+          <p className='beta-info-highlight'>
+            Exciting news: New models added weekly!
+          </p>
         </div>
+
+        <Contact />
+
+        {selectedMatch && (
+          <MatchPopup match={selectedMatch} onClose={closeMatchPopup} />
+        )}
       </div>
-      {selectedMatch && (
-        <MatchPopup match={selectedMatch} onClose={closeMatchPopup} />
-      )}
-      <Footer navigateTo={navigateTo} />
     </>
   );
 };

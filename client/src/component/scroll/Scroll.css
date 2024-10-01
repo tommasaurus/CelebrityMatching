@@ -20,11 +20,7 @@
 }
 
 .image-gallery-wrapper {
-  background-color: rgb(
-    251,
-    238,
-    235
-  ); /* White background behind the entire gallery */
+  background-color: #fff4ea; /* White background behind the entire gallery */
   border-radius: 15px;
   width: 50%; /* Adjust the width of the white strip */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -39,7 +35,7 @@
 }
 
 .image-wrapper {
-  background-color: white;
+  background-color: #fff4ea;
   border-radius: 100px;
   box-shadow: 0 4px 20px #00aff0; /* Add subtle shadow for depth */
   width: 85%; /* Adjust width to control the white strip */

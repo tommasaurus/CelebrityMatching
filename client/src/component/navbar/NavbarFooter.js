@@ -1,33 +1,38 @@
 import React from "react";
+import logoImage from "/Users/RDua/Desktop/a/Code/CelebrityMatching/client/src/OFlogo.png";
 import "./NavbarFooter.css";
 
 export const Navbar = ({ navigateTo }) => {
+  const handleHowItWorksClick = () => {
+    const scrollPosition = window.innerHeight * 0.7;
+    window.scrollTo({
+      top: scrollPosition,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <nav className='navbar'>
-      <div className='navbar-container'>
-        <a href='#' className='navbar-logo' onClick={() => navigateTo("home")}>
-          OnlyFaceFinder
-        </a>
-        <div className='navbar-buttons'>
-          <button
-            className='navbar-button'
-            onClick={() => navigateTo("scroll")}
-          >
-            Gallery
-          </button>
-          <button
-            className='navbar-button'
-            onClick={() => navigateTo("contact")}
-          >
-            Contact
-          </button>
-          <button
-            className='navbar-button'
-            onClick={() => navigateTo("donate")}
-          >
-            Donate
-          </button>
-        </div>
+      <div className='logo'>
+        <button onClick={() => navigateTo("home")} className='logo-button'>
+          <img
+            src={logoImage}
+            alt='OnlyFans Finder Logo'
+            className='logo-image'
+          />
+        </button>
+      </div>
+      <div className='nav-links'>
+        <button
+          className='nav-button how-it-works'
+          onClick={() => navigateTo("scroll")}
+        >
+          Gallery
+        </button>
+        <button className='nav-button' onClick={() => navigateTo("contact")}>
+          Contact
+        </button>
+        <button className='nav-button sign-in'>Sign in</button>
       </div>
     </nav>
   );
@@ -37,56 +42,78 @@ export const Footer = ({ navigateTo }) => {
   return (
     <footer className='footer'>
       <div className='footer-content'>
-        <div className='footer-section'>
-          <h3>Product</h3>
-          <ul>
-            <li>
-              <a href='#' onClick={() => navigateTo("home")}>
-                OnlyFans
-              </a>
-            </li>
-            <li>
-              <a href='#' onClick={() => navigateTo("scroll")}>
-                Gallery
-              </a>
-            </li>
-          </ul>
+        <div className='footer-logo'>
+          <button onClick={() => navigateTo("home")} className='logo-button'>
+            <img
+              src={logoImage}
+              alt='OnlyFans Finder Logo'
+              className='logo-image'
+            />
+          </button>
         </div>
-        <div className='footer-section'>
-          <h3>Company</h3>
-          <ul>
-            <li>
-              <a href='#' onClick={() => navigateTo("terms")}>
-                Terms of Service
-              </a>
-            </li>
-            <li>
-              <a href='#' onClick={() => navigateTo("privacy")}>
-                Privacy Policy
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div className='footer-section'>
-          <h3>Get in touch</h3>
-          <div className='footer-buttons'>
-            <button
-              className='footer-button'
-              onClick={() => navigateTo("contact")}
-            >
-              Contact
-            </button>
-            <button
-              className='footer-button'
-              onClick={() => navigateTo("donate")}
-            >
-              Donate
-            </button>
+        <div className='footer-sections'>
+          <div className='footer-section'>
+            <h4>Product</h4>
+            <ul>
+              <li>
+                <button
+                  onClick={() => navigateTo("home")}
+                  className='footer-button'
+                >
+                  Finder
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigateTo("scroll")}
+                  className='footer-button'
+                >
+                  Gallery
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className='footer-section'>
+            <h4>Company</h4>
+            <ul>
+              <li>
+                <button
+                  onClick={() => navigateTo("privacy-policy")}
+                  className='footer-button'
+                >
+                  Privacy Policy
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigateTo("terms-of-service")}
+                  className='footer-button'
+                >
+                  Terms of Service
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className='footer-section'>
+            <h4>Get in touch</h4>
+            <ul>
+              <li>
+                <button
+                  onClick={() => navigateTo("contact")}
+                  className='footer-button'
+                >
+                  Contact
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
       <div className='footer-bottom'>
-        <p>&copy; 2024 OnlyFaceFinder. All rights reserved.</p>
+        <hr className='footer-line' />
+        <p className='copyright'>
+          &copy; 2024 OnlyFans Finder. All rights reserved.
+        </p>
       </div>
     </footer>
   );

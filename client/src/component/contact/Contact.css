@@ -1,182 +1,125 @@
 .contact-page {
-  height: 100vh;
   display: flex;
-  flex-direction: column;
-}
-
-.contact-container {
-  flex: 1;
-  background-image: url("/Users/tommyqu/CelebrityMatching/client/background.jpg");
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  background-color: #fff4ea;
   background-size: cover;
   background-position: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  color: rgb(231, 57, 57);
-  overflow: hidden;
 }
 
 .contact-content {
-  background-color: rgba(248, 241, 225, 0.8);
-  border-radius: 50px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  padding: 2.5rem;
-  max-width: 550px;
+  background-color: #fff4ea;
+  border-radius: 20px;
+  padding: 4rem;
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 500px;
+  margin-top: -5rem;
+  margin-bottom: -3rem;
 }
 
-.contact-title,
-.donate-title {
-  font-size: 2.5rem;
-  font-weight: 800;
+.contact-title {
+  font-size: 1.75rem;
+  font-weight: 700;
   color: #2f2f2f;
   margin-bottom: 0.5rem;
+  margin-top: -1rem;
 }
 
-.contact-subtitle,
-.donate-subtitle {
+.contact-subtitle {
   color: #666;
   margin-bottom: 1.5rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .form-input {
-  padding: 0.75rem 1rem;
-  border: 3px solid rgba(255, 77, 77, 0.3);
-  border-radius: 25px;
+  padding: 0.75rem 5rem;
+  border: 2px solid #00b0f1;
+  border-radius: 10px;
   font-size: 1rem;
   width: 100%;
   transition: all 0.3s ease;
-  background-color: rgba(255, 242, 242, 0.7);
+  background-color: #fff4ea;
+  text-indent: -1rem;
   box-sizing: border-box;
-  box-shadow: 0 10px 2.5px rgba(0, 0, 0, 0.05);
+  font-family: inherit;
 }
 
 input.form-input {
-  height: 45px;
+  height: 40px;
 }
 
 textarea.form-input {
   resize: vertical;
-  min-height: 110px;
-  max-height: 300px;
+  min-height: 100px;
+  max-height: 200px;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: rgba(255, 77, 77, 0.8);
-  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
-  background-color: rgba(255, 242, 242, 0.7);
+  border-color: #00b0f1;
+  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.1);
 }
 
-textarea.form-input {
-  resize: vertical;
-  font-family: inherit;
-}
-
-.submit-button,
-.donate-now-button {
-  background-color: rgba(255, 77, 77, 0.9);
+.submit-button {
+  background-color: #3788a6;
   color: white;
   border: none;
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 25px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  box-shadow: 0 10px 2.5px rgba(0, 0, 0, 0.05);
+  font-family: inherit;
 }
 
-.submit-button:hover,
-.donate-now-button:hover {
+.submit-button:hover {
   background-color: rgba(255, 49, 49, 0.9);
   transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(255, 77, 77, 0.3);
 }
 
-.submit-button:active,
-.donate-now-button:active {
-  transform: translateY(0);
-}
-
-.submit-button svg,
-.donate-now-button svg {
+.submit-button svg {
   margin-right: 0.5rem;
-}
-
-.donate-section {
-  margin-top: 2rem;
-  background-color: rgba(242, 226, 199, 0.7);
-  border-radius: 25px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.donate-options-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.donate-option {
-  height: 48px;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  border: 3px solid rgba(255, 77, 77, 0.3);
-  background-color: rgba(255, 242, 242, 0.7);
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(132, 0, 0, 0.2);
-}
-
-.donate-option:hover {
-  border-color: rgba(255, 77, 77, 0.8);
-  background-color: rgba(255, 242, 242, 0.7);
-}
-
-.donate-option.selected {
-  background-color: rgba(255, 77, 77, 0.9);
-  border-color: rgba(255, 77, 77, 0.9);
-  color: white;
-  box-shadow: 0 4px 6px rgba(255, 77, 77, 0.2);
 }
 
 .success-message {
   background-color: rgba(76, 175, 80, 0.9);
   color: white;
   padding: 1rem;
-  border-radius: 25px;
+  border-radius: 10px;
   text-align: center;
   margin-bottom: 1rem;
-  box-shadow: 0 4px 6px rgba(255, 77, 77, 0.2);
 }
 
-@media (max-width: 520px) {
+.message-container {
+  margin-top: -5rem;
+  min-height: 60px; /* Ensures consistent spacing even when no message is shown */
+}
+
+.success-message,
+.error-message {
+  background-color: rgba(76, 175, 80, 0.9);
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.error-message {
+  background-color: rgba(255, 0, 0, 0.9);
+}
+@media (max-width: 600px) {
   .contact-content {
     padding: 1.5rem;
   }
@@ -184,8 +127,12 @@ textarea.form-input {
   .form-input {
     font-size: 0.9rem;
   }
+}
 
-  .donate-options-grid {
-    grid-template-columns: 1fr;
-  }
+/* Add this to ensure the background color extends to the bottom of the page */
+body {
+  background-color: #fff4ea;
+  margin: 0;
+  padding: 0;
+  min-height: 25vh;
 }
