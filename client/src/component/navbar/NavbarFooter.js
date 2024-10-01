@@ -1,5 +1,5 @@
 import React from "react";
-import logoImage from "/Users/RDua/Desktop/a/Code/CelebrityMatching/client/src/OFlogo.png";
+import logoImage from "/Users/tommyqu/CelebrityMatching/client/src/OFlogo.png";
 import "./NavbarFooter.css";
 
 export const Navbar = ({ navigateTo }) => {

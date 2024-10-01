@@ -1,16 +1,36 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse
+
+from app.api.image_routes import router as image_router
 
 import os
 from pathlib import Path
 from urllib.parse import quote
 
-from app.services.vitdb import find_top_5_similar_from_db
+from app.services.arcface import find_top_5_similar_from_db  # Updated import
 from app.helpers.db_helper import get_social_links_by_model_id
 
-from app.api.image_routes import router as image_router
+import boto3
+from botocore.exceptions import NoCredentialsError
+from dotenv import load_dotenv
+
+import requests
+
+load_dotenv(dotenv_path='./app/.env')
+
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = os.getenv("AWS_REGION")
+S3_BUCKET = "celebritymatching"
+
+# Create an S3 client
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION
+)
 
 app = FastAPI()
 
@@ -24,60 +44,92 @@ app.add_middleware(
 
 app.include_router(image_router)
 
-# Define the upload directory
-UPLOAD_DIRECTORY = "app/services/uploads/"
-
-# Ensure the upload directory exists
-os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
-IMAGE_DIR = os.path.join("app", "db", "images", "images_onlyfans")
-
-@app.get("/images/{image_path:path}")
-async def get_image(image_path: str):
-    # Decode the URL-encoded image_name    
-    # image_path = os.path.join(IMAGE_DIR, image_name)    
-    image_path = quote(image_path)
-
-    # Check if the image exists
-    if not os.path.isfile(image_path):        
-        raise HTTPException(status_code=404, detail=f"Image not found: {image_path}")
-    
-    # Return the image
-    return FileResponse(image_path)
+@app.get("/images/{image_key:path}")
+async def get_image(image_key: str):
+    """
+    Endpoint to retrieve an image from S3 using a pre-signed URL.
+    """
+    try:
+        # Generate a pre-signed URL to access the image in S3
+        image_url = s3_client.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': S3_BUCKET, 'Key': image_key},
+            ExpiresIn=900  # URL expires in 15 min
+        )
+        response = requests.get(image_url, stream=True)
+        if response.status_code == 200:
+            return StreamingResponse(response.raw, media_type="image/jpeg")
+        else:
+            raise HTTPException(status_code=404, detail="Image not found")
+    except NoCredentialsError:
+        raise HTTPException(status_code=500, detail="AWS credentials not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving image: {str(e)}")
 
 
 @app.post("/upload-image/")
 async def upload_image(file: UploadFile = File(...)):
-    # Save the uploaded file to the specified directory
-    upload_path = Path(UPLOAD_DIRECTORY) / file.filename
-    with open(upload_path, "wb") as buffer:
-        buffer.write(await file.read())
+    """
+    Endpoint to upload an image, process it using ArcFace, and return the top matches.
+    """
+    try:
+        contents = await file.read()
 
-    # Run the model to find the top 5 similar images in the 'onlyfans_features' table
-    onlyfans_results = find_top_5_similar_from_db(str(upload_path), 'vectorized_onlyfans')
+        # Define a temporary path for saving the file
+        temp_directory = Path("app/tmp")
+        temp_directory.mkdir(parents=True, exist_ok=True)
 
-    # Get the first match from the results
-    top_match_image_path = onlyfans_results[0][0]  # This is the image path of the top match
-    
-    # Extract the image filename to use in the URL
-    top_match_image_name = os.path.basename(top_match_image_path)
-    top_match_image_name = quote(top_match_image_name)
+        temp_path = temp_directory / file.filename
 
-    # Return the results
-    return {
-        "top_match_image_url": top_match_image_name,  # Include the URL of the top match image
-        "onlyfans_matches": [{"image_path": match[0], "name": match[1], "similarity": match[2], "model_id": match[3]} for match in onlyfans_results],
-    }
+        # Save the file temporarily
+        with open(temp_path, "wb") as temp_file:
+            temp_file.write(contents)
+
+        # Run the ArcFace model to find the top 5 similar images
+        onlyfans_results = find_top_5_similar_from_db(str(temp_path), 'vectorized_onlyfans_arcface')
+
+        # Remove the temporary file after processing
+        os.remove(temp_path)
+
+        # Prepare the results
+        matches = []
+        for match in onlyfans_results:
+            image_path, name, similarity, model_id = match
+            # Convert similarity to a native Python float
+            similarity = float(similarity)
+            image_url = f"{quote(image_path)}"            
+
+            # Fetch social links
+            social_links = get_social_links_by_model_id(model_id)
+            if social_links is None:
+                social_links = {}            
+
+            matches.append({
+                "image_url": image_url,
+                "name": name,
+                "similarity": similarity,
+                "model_id": model_id,
+                "social_links": social_links
+            })
+
+        # Return the results
+        return {"matches": matches}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
+
+
 
 @app.get("/get-social-links/{model_id}")
 async def get_social_links(model_id: int):
+    """
+    Endpoint to retrieve social links for a given model ID.
+    """
     try:
-        # Fetch the social links for the given model_id using db_helper
         social_links = get_social_links_by_model_id(model_id)
-        
         if social_links:
             return {"model_id": model_id, "social_links": social_links}
         else:
             raise HTTPException(status_code=404, detail="Model not found")
-
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error retrieving social links: {str(e)}")

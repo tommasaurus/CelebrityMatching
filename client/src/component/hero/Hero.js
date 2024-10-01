@@ -17,7 +17,7 @@ import {
 import "./Hero.css";
 import ImageDisplay from "../ui/ImageDisplay";
 import MatchPopup from "../MatchPopup/MatchPopup";
-import logo from "/Users/RDua/Desktop/a/Code/CelebrityMatching/client/src/OFlogo.png";
+import logo from "/Users/tommyqu/CelebrityMatching/client/src/OFlogo.png";
 import Contact from "../contact/Contact";
 
 const Hero = ({ navigateTo }) => {
@@ -117,7 +117,7 @@ const Hero = ({ navigateTo }) => {
       setUploading(true);
       setShowViewMatchesButton(false);
       const response = await axios.post(
-        "http://127.0.0.1:8000/upload-image/",
+        `http://${process.env.REACT_APP_BACKEND_IP}:80/upload-image/`,
         formData,
         {
           headers: {
@@ -126,7 +126,7 @@ const Hero = ({ navigateTo }) => {
         }
       );
       console.log(response.data);
-      setMatches(response.data.onlyfans_matches);
+      setMatches(response.data.matches);
       setShowViewMatchesButton(true);
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -139,9 +139,13 @@ const Hero = ({ navigateTo }) => {
     setShowAllMatches(!showAllMatches);
   };
 
-  const handleMatchClick = (match) => {
-    setSelectedMatch(match);
+  const handleMatchClick = (match, imageSrc) => {
+    setSelectedMatch({
+        ...match,
+        imageSrc,  // Use the blob URL
+    });
   };
+
 
   const closeMatchPopup = () => {
     setSelectedMatch(null);
@@ -320,15 +324,15 @@ const Hero = ({ navigateTo }) => {
               {matches.slice(0, showAllMatches ? 5 : 3).map((match, index) => (
                 <div
                   key={index}
-                  className={`match match-${index + 1}`}
-                  onClick={() => handleMatchClick(match)}
+                  className={`match match-${index + 1}`}                  
                 >
                   <ImageDisplay
-                    imageName={match.image_path}
+                    imageName={match.image_url}
                     modelId={match.model_id}
                     alt={`${match.name} preview`}
                     width={300}
                     height={300}
+                    onImageClick={(imageSrc) => handleMatchClick(match, imageSrc)}  
                   />
                   <div className='match-content'>
                     <p>{match.name}</p>
