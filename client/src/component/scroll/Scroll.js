@@ -34,7 +34,7 @@ const InfiniteScrollImages = ({ navigateTo }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/random-images?count=5&page=${page}`
+        `http://${process.env.REACT_APP_BACKEND_IP}:80/random-images?count=5&page=${page}`
       );
       const data = await response.json();
       if (response.ok) {
@@ -56,7 +56,7 @@ const InfiniteScrollImages = ({ navigateTo }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/random-images?count=5&page=${page}`
+        `http://${process.env.REACT_APP_BACKEND_IP}:80/random-images?count=5&page=${page}`
       );
       const data = await response.json();
       if (response.ok) {
@@ -91,7 +91,7 @@ const InfiniteScrollImages = ({ navigateTo }) => {
               images.map((image, index) => (
                 <div key={index} className='image-wrapper'>
                   <img
-                    src={`http://127.0.0.1:8000/images/${image.image_url}`}
+                    src={`http://${process.env.REACT_APP_BACKEND_IP}:80/images/${image.image_url}`}
                     alt={`Image of ${image.name}`}
                   />
                   <p>{image.name}</p> {/* Display the name below the image */}

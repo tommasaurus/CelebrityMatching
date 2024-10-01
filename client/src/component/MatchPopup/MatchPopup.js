@@ -1,6 +1,7 @@
+// MatchPopup.js
+
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import ImageDisplay from "../ui/ImageDisplay";
 import {
   FaInstagram,
   FaTwitter,
@@ -24,14 +25,13 @@ const MatchPopup = ({ match, onClose }) => {
     const fetchSocialLinks = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/get-social-links/${match.model_id}`
+          `http://${process.env.REACT_APP_BACKEND_IP}:80/get-social-links/${match.model_id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch social links");
         }
         const data = await response.json();
         setSocialLinks(data.social_links);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching social links:", error);
       }
@@ -63,37 +63,41 @@ const MatchPopup = ({ match, onClose }) => {
           <X size={24} color='red' />
         </button>
         <div className='match-popup-image'>
-          <ImageDisplay
-            imageName={match.image_path}
-            modelId={match.model_id}
-            alt={`${match.name} full`}
-            width={500}
-            height={500}
-          />
+          {match.imageSrc ? (
+            <img
+              src={match.imageSrc}
+              alt={`${match.name} full`}
+              width={500}
+              height={500}
+            />
+          ) : (
+            <p>Loading image...</p>
+          )}
         </div>
         <div className='match-popup-info'>
           <h2>{match.name}</h2>
           <p>Similarity: {(match.similarity * 100).toFixed(2)}%</p>
           <div className='match-popup-social-links'>
-            {socialPlatforms.map(
-              (platform) =>
-                match[platform.name] && (
-                  <a
-                    key={platform.name}
-                    href={match[platform.name]}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <button
-                      className='social-button'
-                      style={{ backgroundColor: platform.color }}
+            {socialLinks &&
+              socialPlatforms.map(
+                (platform) =>
+                  socialLinks[platform.name] && (
+                    <a
+                      key={platform.name}
+                      href={socialLinks[platform.name]}
+                      target='_blank'
+                      rel='noopener noreferrer'
                     >
-                      <platform.icon size={20} />
-                      <span>{platform.name}</span>
-                    </button>
-                  </a>
-                )
-            )}
+                      <button
+                        className='social-button'
+                        style={{ backgroundColor: platform.color }}
+                      >
+                        <platform.icon size={20} />
+                        <span>{platform.name}</span>
+                      </button>
+                    </a>
+                  )
+              )}
           </div>
         </div>
       </div>
