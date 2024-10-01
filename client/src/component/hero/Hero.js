@@ -31,6 +31,7 @@ const Hero = ({ navigateTo }) => {
   const [conversionCount, setConversionCount] = useState(12465);
   const [fileSize, setFileSize] = useState(64);
   const [showViewMatchesButton, setShowViewMatchesButton] = useState(false);
+  const [matchesLoaded, setMatchesLoaded] = useState(false);
   const fileInputRef = useRef(null);
   const matchesRef = useRef(null);
   const galleryRef = useRef(null);
@@ -102,6 +103,7 @@ const Hero = ({ navigateTo }) => {
     setFile(null);
     setFilePreview(null);
     setShowViewMatchesButton(false);
+    setMatchesLoaded(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -128,6 +130,7 @@ const Hero = ({ navigateTo }) => {
       console.log(response.data);
       setMatches(response.data.onlyfans_matches);
       setShowViewMatchesButton(true);
+      setMatchesLoaded(true);
     } catch (error) {
       console.error("Error uploading image:", error);
     } finally {
@@ -162,17 +165,17 @@ const Hero = ({ navigateTo }) => {
   const handleCarouselImageClick = async (imageSrc, imageName) => {
     if (!isHoveringCaption) {
       try {
-        setUploading(true);
-        const response = await fetch(imageSrc);
-        const blob = await response.blob();
+        // Assuming the images are preloaded locally, no need to fetch the images again
         const file = new File(
-          [blob],
+          [imageSrc],
           `${imageName.toLowerCase().replace(" ", "_")}.png`,
-          { type: "image/png" }
+          {
+            type: "image/png",
+          }
         );
         setFile(file);
-        setFilePreview(URL.createObjectURL(file));
-        await handleUploadFile();
+        setFilePreview(imageSrc); // Use the clicked image's source for the preview
+        await handleUploadFile(); // This function should handle the file upload
       } catch (error) {
         console.error("Error uploading carousel image:", error);
       } finally {
@@ -183,6 +186,12 @@ const Hero = ({ navigateTo }) => {
 
   const handleGalleryClick = () => {
     navigateTo("scroll");
+  };
+
+  const scrollToMatches = () => {
+    if (matchesRef.current) {
+      matchesRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
@@ -286,11 +295,17 @@ const Hero = ({ navigateTo }) => {
           )}
           {file && (
             <button
-              className='upload-button'
-              onClick={handleUploadFile}
+              className={`upload-button ${
+                matchesLoaded ? "matches-loaded" : ""
+              }`}
+              onClick={matchesLoaded ? scrollToMatches : handleUploadFile}
               disabled={uploading}
             >
-              {uploading ? "Uploading..." : "Find Model"}
+              {uploading
+                ? "Uploading..."
+                : matchesLoaded
+                ? "Matches"
+                : "Find Model"}
             </button>
           )}
         </div>
@@ -425,8 +440,6 @@ const Hero = ({ navigateTo }) => {
             Exciting news: New models added weekly!
           </p>
         </div>
-
-        <Contact />
 
         {selectedMatch && (
           <MatchPopup match={selectedMatch} onClose={closeMatchPopup} />
