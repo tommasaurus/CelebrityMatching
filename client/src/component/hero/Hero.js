@@ -10,14 +10,14 @@ import {
   CheckCircle,
   AlertCircle,
   X,
-  Loader,
   ChevronDownCircle,
   ChevronUpCircle,
+  Scan,
 } from "lucide-react";
 import "./Hero.css";
 import ImageDisplay from "../ui/ImageDisplay";
 import MatchPopup from "../MatchPopup/MatchPopup";
-import logo from "/Users/tommyqu/CelebrityMatching/client/src/OFlogo.png";
+import logo from "/Users/RDua/Desktop/a/Code/CelebrityMatching/client/src/OFlogo.png";
 import Contact from "../contact/Contact";
 
 const Hero = ({ navigateTo }) => {
@@ -40,9 +40,11 @@ const Hero = ({ navigateTo }) => {
   const [isHoveringCaption, setIsHoveringCaption] = useState(false);
   const carouselImages = [
     { src: "emma.png", name: "Emma Watson" },
-    { src: "irina.png", name: "Irina Shayk" },
-    { src: "scarlett.png", name: "Scarlett Johansson" },
+    { src: "emily.png", name: "Emily Ratajkowski" },
+    { src: "sabrina.png", name: "Sabrina Carpenter" },
   ];
+
+  const [uploadingText, setUploadingText] = useState("Uploading");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -57,6 +59,24 @@ const Hero = ({ navigateTo }) => {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    let interval;
+    if (uploading) {
+      let animationState = 0;
+      const animationSequence = [
+        "Uploading",
+        "Uploading.",
+        "Uploading..",
+        "Uploading...",
+      ];
+      interval = setInterval(() => {
+        setUploadingText(animationSequence[animationState]);
+        animationState = (animationState + 1) % animationSequence.length;
+      }, 500);
+    }
+    return () => clearInterval(interval);
+  }, [uploading]);
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -194,6 +214,14 @@ const Hero = ({ navigateTo }) => {
     }
   };
 
+  const adjustSimilarity = (similarity) => {
+    // Add 50 to the similarity score
+    const inflatedSimilarity = similarity * 100 + 50;
+
+    // If the inflated similarity exceeds 100, set it to 100
+    return inflatedSimilarity > 100 ? 100 : inflatedSimilarity.toFixed(2);
+  };
+
   return (
     <>
       <div className='hero-container'>
@@ -302,18 +330,13 @@ const Hero = ({ navigateTo }) => {
               disabled={uploading}
             >
               {uploading
-                ? "Uploading..."
+                ? uploadingText
                 : matchesLoaded
                 ? "Matches"
                 : "Find Model"}
             </button>
           )}
         </div>
-        {uploading && (
-          <div className='loading-spinner'>
-            <Loader size={24} />
-          </div>
-        )}
         <div className='features'>
           <div className='feature'>
             <FileText size={20} />
@@ -329,9 +352,9 @@ const Hero = ({ navigateTo }) => {
           </div>
         </div>
         {matches.length > 0 && (
-          <div className="top-matches" ref={matchesRef}>
+          <div className='top-matches' ref={matchesRef}>
             <h2>Your Top Matches</h2>
-            <div className="matches-container">
+            <div className='matches-container'>
               {matches.slice(0, showAllMatches ? 5 : 3).map((match, index) => (
                 <div key={index} className={`match match-${index + 1}`}>
                   <img
@@ -340,18 +363,18 @@ const Hero = ({ navigateTo }) => {
                     width={300}
                     height={300}
                     onClick={() => handleMatchClick(match)}
-                    className="match-image"
+                    className='match-image'
                   />
-                  <div className="match-content">
+                  <div className='match-content'>
                     <p>{match.name}</p>
-                    <p>Similarity: {(match.similarity * 100).toFixed(2)}%</p>
+                    <p>Similarity: {adjustSimilarity(match.similarity)}%</p>
                   </div>
                 </div>
               ))}
             </div>
             {matches.length > 3 && (
               <button
-                className="view-more-button"
+                className='view-more-button'
                 onClick={toggleShowAllMatches}
               >
                 {showAllMatches ? (
@@ -400,7 +423,7 @@ const Hero = ({ navigateTo }) => {
                   "Use a clear frontal photo with only one person. Face should be clearly visible for best results.",
               },
               {
-                icon: <ChevronRight size={32} />,
+                icon: <Scan size={32} />,
                 title: "Face Detection",
                 description:
                   "Our system detects facial features including eyebrows, eyes, nose, and mouth.",
@@ -428,10 +451,8 @@ const Hero = ({ navigateTo }) => {
           </h3>
           <p className='beta-info-text'>
             We're currently in beta, constantly improving our recognition
-            algorithm. Every request you make helps train our neural network, so
-            please share with friends! We're committed to high accuracy, using
-            multiple angles to create detailed actress templates. Our team works
-            daily to refine the system and correct any errors.
+            algorithm. We're committed to high accuracy and our team works daily
+            to refine the system and correct any errors.
           </p>
           <p className='beta-info-highlight'>
             Exciting news: New models added weekly!

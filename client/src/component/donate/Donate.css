@@ -6,7 +6,7 @@
 
 .donate-container {
   flex: 1;
-  background-image: url("/Users/tommyqu/CelebrityMatching/client/background.jpg");
+  background-image: url("/Users/RDua/Desktop/a/Code/CelebrityMatching/client/background.jpg");
   background-size: cover;
   background-position: center;
   display: flex;
@@ -71,7 +71,6 @@
   align-items: center;
   margin-top: 20px;
 }
-
 
 .input-icon {
   position: absolute;

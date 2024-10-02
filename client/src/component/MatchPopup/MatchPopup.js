@@ -45,6 +45,14 @@ const MatchPopup = ({ match, onClose }) => {
     }
   }, [match.model_id]);
 
+  const adjustSimilarity = (similarity) => {
+    // Add 50 to the similarity score
+    const inflatedSimilarity = similarity * 100 + 50;
+
+    // If the inflated similarity exceeds 100, set it to 100
+    return inflatedSimilarity > 100 ? 100 : inflatedSimilarity.toFixed(2);
+  };
+
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(onClose, 300); // Wait for the fade-out animation to complete
@@ -70,10 +78,10 @@ const MatchPopup = ({ match, onClose }) => {
   return (
     <div className={`match-popup-overlay ${isVisible ? "visible" : ""}`}>
       <div className={`match-popup-content ${isVisible ? "visible" : ""}`}>
-        <button className="match-popup-close" onClick={handleClose}>
-          <X size={24} color="red" />
+        <button className='match-popup-close' onClick={handleClose}>
+          <X size={24} color='red' />
         </button>
-        <div className="match-popup-image">
+        <div className='match-popup-image'>
           {match.image_url ? (
             <img
               src={match.image_url}
@@ -85,10 +93,10 @@ const MatchPopup = ({ match, onClose }) => {
             <p>Loading image...</p>
           )}
         </div>
-        <div className="match-popup-info">
+        <div className='match-popup-info'>
           <h2>{match.name}</h2>
-          <p>Similarity: {(match.similarity * 100).toFixed(2)}%</p>
-          <div className="match-popup-social-links">
+          <p>Similarity: {adjustSimilarity(match.similarity)}%</p>
+          <div className='match-popup-social-links'>
             {socialLinks &&
               socialPlatforms.map(
                 (platform) =>
@@ -96,11 +104,11 @@ const MatchPopup = ({ match, onClose }) => {
                     <a
                       key={platform.name}
                       href={socialLinks[platform.name]}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      target='_blank'
+                      rel='noopener noreferrer'
                     >
                       <button
-                        className="social-button"
+                        className='social-button'
                         style={{ backgroundColor: platform.color }}
                       >
                         <platform.icon size={20} />
