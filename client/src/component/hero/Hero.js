@@ -169,17 +169,17 @@ const Hero = ({ navigateTo }) => {
   const handleCarouselImageClick = async (imageSrc, imageName) => {
     if (!isHoveringCaption) {
       try {
-        // Assuming the images are preloaded locally, no need to fetch the images again
+        setUploading(true);
+        const response = await fetch(imageSrc);
+        const blob = await response.blob();
         const file = new File(
-          [imageSrc],
+          [blob],
           `${imageName.toLowerCase().replace(" ", "_")}.png`,
-          {
-            type: "image/png",
-          }
+          { type: "image/png" }
         );
         setFile(file);
-        setFilePreview(imageSrc); // Use the clicked image's source for the preview
-        await handleUploadFile(); // This function should handle the file upload
+        setFilePreview(URL.createObjectURL(file));
+        await handleUploadFile();
       } catch (error) {
         console.error("Error uploading carousel image:", error);
       } finally {
