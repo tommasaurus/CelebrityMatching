@@ -242,36 +242,36 @@ const Hero = ({ navigateTo }) => {
 
             <div className='carousel-section'>
               <div className='carousel'>
-                {carouselImages.map((image, index) => (
+                <div
+                  className='carousel-item active'
+                  onClick={() =>
+                    handleCarouselImageClick(
+                      carouselImages[currentImage].src,
+                      carouselImages[currentImage].name
+                    )
+                  }
+                >
+                  <img
+                    src={carouselImages[currentImage].src}
+                    alt={`Carousel ${currentImage + 1}`}
+                    className='carousel-image'
+                  />
                   <div
-                    key={index}
-                    className={`carousel-item ${
-                      currentImage === index ? "active" : ""
-                    }`}
-                    onClick={() =>
-                      handleCarouselImageClick(image.src, image.name)
-                    }
+                    className='carousel-caption'
+                    onMouseEnter={() => setIsHoveringCaption(true)}
+                    onMouseLeave={() => setIsHoveringCaption(false)}
                   >
-                    <img
-                      src={image.src}
-                      alt={`Carousel ${index + 1}`}
-                      className='carousel-image'
-                    />
-                    <div
-                      className='carousel-caption'
-                      onMouseEnter={() => setIsHoveringCaption(true)}
-                      onMouseLeave={() => setIsHoveringCaption(false)}
-                    >
-                      <button className='carousel-btn' onClick={handlePrev}>
-                        <ChevronLeft size={24} />
-                      </button>
-                      <span className='carousel-name'>{image.name}</span>
-                      <button className='carousel-btn' onClick={handleNext}>
-                        <ChevronRight size={24} />
-                      </button>
-                    </div>
+                    <button className='carousel-btn' onClick={handlePrev}>
+                      <ChevronLeft size={24} />
+                    </button>
+                    <span className='carousel-name'>
+                      {carouselImages[currentImage].name}
+                    </span>
+                    <button className='carousel-btn' onClick={handleNext}>
+                      <ChevronRight size={24} />
+                    </button>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
