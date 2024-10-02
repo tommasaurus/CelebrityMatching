@@ -4,16 +4,30 @@
   align-items: flex-start;
   padding: 2rem;
   background-color: #fff4ea;
-  width:40%; /* Make sure the parent takes up the full width */
+  width:100%;
 }
 
 .contact-content {
   position: relative;
-  background-color: #fff4ea;  
-  padding: 4rem;
-  width: 100%;  
-  margin-top: -5rem;
-  margin-bottom: -3rem;
+  background-color: #fff4ea;
+  border-radius: 25px;
+  padding: 4rem 6rem;
+  width: 100%; /* Set the width of the box to a larger value */
+  margin: 2rem auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center everything horizontally inside this container */
+}
+
+.contact-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%; /* Takes the full available space within the container but respects max-width */
+  max-width: 500px; /* Ensures the form does not become too wide */
+  box-sizing: border-box;
 }
 
 .contact-title {
@@ -30,13 +44,6 @@
   font-size: 1rem;
 }
 
-.contact-form {
-  position: relative; /* Make the form the relative container for message positioning */
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
 .form-input {
   /* padding: 0.75rem 5rem; */
   border: 2px solid #00b0f1;
@@ -45,8 +52,7 @@
   width: 100%;
   transition: all 0.3s ease;
   background-color: #fff4ea;
-  text-indent: 1rem;
-  box-sizing: border-box;
+  text-indent: 1rem;  
   font-family: inherit;
 }
 
@@ -67,13 +73,13 @@ textarea.form-input {
 }
 
 .submit-button {
-  background-color: #45b4dd;
+  background: linear-gradient(135deg, #45b4dd, #3287b3);
   color: white;
   border: none;
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 10px;
+  border-radius: 15px; /* More rounded corners for a modern look */
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -84,8 +90,8 @@ textarea.form-input {
 }
 
 .submit-button:hover {
-  background-color: #3788a6;
   transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Add a slight lift when hovered */
 }
 
 .submit-button svg {
@@ -124,18 +130,59 @@ textarea.form-input {
 }
 @media (max-width: 600px) {
   .contact-content {
-    padding: 1.5rem;
+    padding: 2rem;
   }
 
   .form-input {
     font-size: 0.9rem;
   }
-}
 
+  .submit-button {
+    padding: 0.6rem;
+  }
+}
 /* Add this to ensure the background color extends to the bottom of the page */
 body {
   background-color: #fff4ea;
   margin: 0;
   padding: 0;
   min-height: 25vh;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #45b4dd;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 3px solid #45b4dd;
+  border-radius: 25px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 242, 242, 0.7);
+  box-shadow: 0 10px 2.5px rgba(0, 0, 0, 0.05);
+}
+
+.input-wrapper input:focus,
+.input-wrapper textarea:focus {
+  outline: none;
+  border-color: rgba(255, 77, 77, 0.8);
+  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.1);
+}
+
+.input-wrapper textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 3px solid #45b4dd;
+  border-radius: 25px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 242, 242, 0.7);
+  box-shadow: 0 10px 2.5px rgba(0, 0, 0, 0.05);
+  margin-top: -0.8rem;
 }
