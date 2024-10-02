@@ -102,8 +102,7 @@ textarea.form-input {
 }
 
 .message-container {
-  margin-top: -5rem;
-  min-height: 60px; /* Ensures consistent spacing even when no message is shown */
+  top: 100%;  
 }
 
 .success-message,
