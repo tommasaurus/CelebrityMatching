@@ -11,17 +11,18 @@ body {
   align-items: center;
   justify-content: flex-start;
   padding: 2rem;
-  padding-top: 1px; /* Increase this value to move the page down */
+  padding-top: 1px;
   padding-bottom: 40px;
   color: #333;
   background-color: #fff4ea;
 }
 
 .hero-logo {
-  width: 300px;
+  width: 500px;
   height: auto;
   max-width: 100%;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.1rem;
+  margin-top: -1.3rem;
 }
 
 .hero-subtitle {
@@ -75,11 +76,11 @@ body {
 
 .upload-icon {
   color: #00b0f1;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .upload-text {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -158,7 +159,7 @@ body {
 }
 
 .carousel-name {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #333;
   cursor: default;
@@ -187,14 +188,15 @@ body {
 }
 
 .uploaded-image-title {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #333333;
   margin-bottom: 1rem;
+  margin-top: -0.2rem;
 }
 
 .uploaded-image {
   max-width: 100%;
-  max-height: 400px;
+  max-height: 300px;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -273,6 +275,52 @@ body {
   cursor: not-allowed;
 }
 
+.upload-button.matches-loaded {
+  background-color: #38b43c;
+  animation: pulsate-green 1.8s infinite;
+}
+
+@keyframes pulsate-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(56, 180, 60, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(56, 180, 60, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(56, 180, 60, 0);
+  }
+}
+
+.gallery-button {
+  background-color: #00b0f1;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  animation: pulsate-blue 2s infinite;
+}
+
+@keyframes pulsate-blue {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 176, 241, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 176, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 176, 241, 0);
+  }
+}
+
 .loading-spinner {
   color: #333;
   display: flex;
@@ -280,7 +328,6 @@ body {
   margin-top: 1rem;
 }
 
-/* Add this new CSS for the spinner animation */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -341,26 +388,14 @@ body {
 
 .match img {
   width: 100%;
-  height: 200px; /* Set a fixed height */
-  object-fit: cover; /* This will ensure the image covers the area without stretching */
-  object-position: center; /* This centers the image within its container */
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
 }
 
-match-content {
+.match-content {
   padding: 15px;
   background-color: #fff;
-}
-
-/* Adjust for mobile screens */
-@media (max-width: 768px) {
-  .match {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-
-  .match img {
-    height: 250px; /* Slightly taller on mobile for better visibility */
-  }
 }
 
 .match:hover {
@@ -417,29 +452,12 @@ match-content {
   text-align: center;
   font-size: 1rem;
   color: #666;
-  margin-top: 0.2rem;
+  margin-top: -0.4rem;
 }
 
 .animated-number {
   font-weight: bold;
   color: #00b0f1;
-}
-
-.gallery-button {
-  background-color: #00b0f1;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-left: 0.5rem;
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  animation: pulsate 2s infinite;
 }
 
 .gallery-button:hover {
@@ -464,18 +482,6 @@ match-content {
 
 .gallery-button:hover::after {
   animation: ripple 1s ease-out;
-}
-
-@keyframes pulsate {
-  0% {
-    box-shadow: 0 0 0 0 rgba(0, 176, 241, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(0, 176, 241, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(0, 176, 241, 0);
-  }
 }
 
 @keyframes ripple {
@@ -576,7 +582,6 @@ match-content {
   color: #00b0f1;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .hero-container {
     padding: 1rem;
