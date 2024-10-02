@@ -8,11 +8,10 @@
 }
 
 .contact-content {
-  background-color: #fff4ea;
-  border-radius: 20px;
+  position: relative;
+  background-color: #fff4ea;  
   padding: 4rem;
-  width: 100%;
-  max-width: 1000px;
+  width: 100%;  
   margin-top: -5rem;
   margin-bottom: -3rem;
 }
@@ -32,6 +31,7 @@
 }
 
 .contact-form {
+  position: relative; /* Make the form the relative container for message positioning */
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -102,9 +102,14 @@ textarea.form-input {
 }
 
 .message-container {
-  top: 100%;  
+  position: absolute; /* Position absolutely within the form */
+  top: 95%; /* Position below the form */
+  left: 0;
+  width: 100%; /* Match the width of the form */
+  text-align: center;
+  box-sizing: border-box;
+  margin-top: 1rem; /* Space between the message and the button */
 }
-
 .success-message,
 .error-message {
   background-color: rgba(76, 175, 80, 0.9);

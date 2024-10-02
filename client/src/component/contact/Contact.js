@@ -41,15 +41,15 @@ const Contact = () => {
             <Send size={20} />
             {isSending ? "Sending..." : "Send Message"}
           </button>
+          <div className='message-container'>
+            {isSubmitted && (
+              <div className='success-message'>
+                Thank you! Your message has been sent.
+              </div>
+            )}
+            {submitError && <div className='error-message'>{submitError}</div>}
+          </div>
         </form>
-        <div className='message-container'>
-          {isSubmitted && (
-            <div className='success-message'>
-              Thank you! Your message has been sent.
-            </div>
-          )}
-          {submitError && <div className='error-message'>{submitError}</div>}
-        </div>
       </div>
     </div>
   );
