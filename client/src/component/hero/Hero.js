@@ -15,7 +15,6 @@ import {
   ChevronUpCircle,
 } from "lucide-react";
 import "./Hero.css";
-import ImageDisplay from "../ui/ImageDisplay";
 import MatchPopup from "../MatchPopup/MatchPopup";
 import logo from "/Users/tommyqu/CelebrityMatching/client/src/OFlogo.png";
 import Contact from "../contact/Contact";
