@@ -4,8 +4,7 @@
   align-items: flex-start;
   padding: 2rem;
   background-color: #fff4ea;
-  background-size: cover;
-  background-position: center;
+  width:40%; /* Make sure the parent takes up the full width */
 }
 
 .contact-content {
@@ -13,7 +12,7 @@
   border-radius: 20px;
   padding: 4rem;
   width: 100%;
-  max-width: 500px;
+  max-width: 1000px;
   margin-top: -5rem;
   margin-bottom: -3rem;
 }
@@ -39,14 +38,14 @@
 }
 
 .form-input {
-  padding: 0.75rem 5rem;
+  /* padding: 0.75rem 5rem; */
   border: 2px solid #00b0f1;
   border-radius: 10px;
   font-size: 1rem;
   width: 100%;
   transition: all 0.3s ease;
   background-color: #fff4ea;
-  text-indent: -1rem;
+  text-indent: 1rem;
   box-sizing: border-box;
   font-family: inherit;
 }
@@ -68,7 +67,7 @@ textarea.form-input {
 }
 
 .submit-button {
-  background-color: #3788a6;
+  background-color: #45b4dd;
   color: white;
   border: none;
   padding: 0.75rem;
@@ -85,7 +84,7 @@ textarea.form-input {
 }
 
 .submit-button:hover {
-  background-color: rgba(255, 49, 49, 0.9);
+  background-color: #3788a6;
   transform: translateY(-2px);
 }
 
