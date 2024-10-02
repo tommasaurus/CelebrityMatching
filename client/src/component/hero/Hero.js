@@ -449,6 +449,8 @@ const Hero = ({ navigateTo }) => {
           <MatchPopup match={selectedMatch} onClose={closeMatchPopup} />
         )}
       </div>
+
+      <Contact />
     </>
   );
 };
