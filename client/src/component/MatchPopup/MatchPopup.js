@@ -8,8 +8,11 @@ import {
   FaFacebook,
   FaYoutube,
   FaImdb,
+  FaTiktok,
+  FaTwitch,
 } from "react-icons/fa";
 import { SiOnlyfans } from "react-icons/si";
+import { BsGlobe } from "react-icons/bs";
 import "./MatchPopup.css";
 
 const MatchPopup = ({ match, onClose }) => {
@@ -54,6 +57,14 @@ const MatchPopup = ({ match, onClose }) => {
     { name: "youtube", icon: FaYoutube, color: "#FF0000" },
     { name: "imdb", icon: FaImdb, color: "#F5C518" },
     { name: "onlyfans", icon: SiOnlyfans, color: "#00AFF0" },
+    { name: "fansly", icon: BsGlobe, color: "#00AFF0" },
+    { name: "tiktok", icon: FaTiktok, color: "#010101" },
+    { name: "twitch", icon: FaTwitch, color: "#9146FF" },
+    { name: "www", icon: BsGlobe, color: "#4A90E2" }, // General websites
+    { name: "onlyfansfree", icon: SiOnlyfans, color: "#00AFF0" }, // Same icon as OnlyFans
+    { name: "mym", icon: BsGlobe, color: "#00AFF0" }, // Use generic icon if there's no specific one
+    { name: "x", icon: FaTwitter, color: "#000000" }, // Twitter (previously known as X)
+    { name: "other", icon: BsGlobe, color: "#4A90E2" }, // Generic icon for 'other'
   ];
 
   return (
