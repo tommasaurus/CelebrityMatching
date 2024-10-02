@@ -61,22 +61,22 @@ const MatchPopup = ({ match, onClose }) => {
     { name: "tiktok", icon: FaTiktok, color: "#010101" },
     { name: "twitch", icon: FaTwitch, color: "#9146FF" },
     { name: "www", icon: BsGlobe, color: "#4A90E2" }, // General websites
-    { name: "onlyfansfree", icon: SiOnlyfans, color: "#00AFF0" }, // Same icon as OnlyFans
-    { name: "mym", icon: BsGlobe, color: "#00AFF0" }, // Use generic icon if there's no specific one
-    { name: "x", icon: FaTwitter, color: "#000000" }, // Twitter (previously known as X)
-    { name: "other", icon: BsGlobe, color: "#4A90E2" }, // Generic icon for 'other'
+    { name: "onlyfansfree", icon: SiOnlyfans, color: "#00AFF0" },
+    { name: "mym", icon: BsGlobe, color: "#00AFF0" },
+    { name: "x", icon: FaTwitter, color: "#000000" },
+    { name: "other", icon: BsGlobe, color: "#4A90E2" },
   ];
 
   return (
     <div className={`match-popup-overlay ${isVisible ? "visible" : ""}`}>
       <div className={`match-popup-content ${isVisible ? "visible" : ""}`}>
-        <button className='match-popup-close' onClick={handleClose}>
-          <X size={24} color='red' />
+        <button className="match-popup-close" onClick={handleClose}>
+          <X size={24} color="red" />
         </button>
-        <div className='match-popup-image'>
-          {match.imageSrc ? (
+        <div className="match-popup-image">
+          {match.image_url ? (
             <img
-              src={match.imageSrc}
+              src={match.image_url}
               alt={`${match.name} full`}
               width={500}
               height={500}
@@ -85,10 +85,10 @@ const MatchPopup = ({ match, onClose }) => {
             <p>Loading image...</p>
           )}
         </div>
-        <div className='match-popup-info'>
+        <div className="match-popup-info">
           <h2>{match.name}</h2>
           <p>Similarity: {(match.similarity * 100).toFixed(2)}%</p>
-          <div className='match-popup-social-links'>
+          <div className="match-popup-social-links">
             {socialLinks &&
               socialPlatforms.map(
                 (platform) =>
@@ -96,11 +96,11 @@ const MatchPopup = ({ match, onClose }) => {
                     <a
                       key={platform.name}
                       href={socialLinks[platform.name]}
-                      target='_blank'
-                      rel='noopener noreferrer'
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <button
-                        className='social-button'
+                        className="social-button"
                         style={{ backgroundColor: platform.color }}
                       >
                         <platform.icon size={20} />

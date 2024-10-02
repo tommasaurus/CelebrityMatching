@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from fastapi.responses import RedirectResponse
 
 from app.api.image_routes import router as image_router
 
@@ -11,26 +12,10 @@ from urllib.parse import quote
 from app.services.arcface import find_top_5_similar_from_db  # Updated import
 from app.helpers.db_helper import get_social_links_by_model_id, get_social_links_by_model_name
 
-import boto3
 from botocore.exceptions import NoCredentialsError
-from dotenv import load_dotenv
 
-import requests
+from app.services.s3_client import s3_client, S3_BUCKET
 
-load_dotenv(dotenv_path='./app/.env')
-
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_REGION = os.getenv("AWS_REGION")
-S3_BUCKET = "celebritymatching"
-
-# Create an S3 client
-s3_client = boto3.client(
-    's3',
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_REGION
-)
 
 app = FastAPI()
 
@@ -44,23 +29,19 @@ app.add_middleware(
 
 app.include_router(image_router)
 
-@app.get("/images/{image_key:path}")
 async def get_image(image_key: str):
     """
-    Endpoint to retrieve an image from S3 using a pre-signed URL.
+    Endpoint to retrieve an image from S3 using a pre-signed URL and redirect.
     """
     try:
         # Generate a pre-signed URL to access the image in S3
         image_url = s3_client.generate_presigned_url(
             'get_object',
             Params={'Bucket': S3_BUCKET, 'Key': image_key},
-            ExpiresIn=900  # URL expires in 15 min
+            ExpiresIn=900  # URL expires in 15 minutes
         )
-        response = requests.get(image_url, stream=True)
-        if response.status_code == 200:
-            return StreamingResponse(response.raw, media_type="image/jpeg")
-        else:
-            raise HTTPException(status_code=404, detail="Image not found")
+        # Redirect the client to the pre-signed URL
+        return RedirectResponse(url=image_url)
     except NoCredentialsError:
         raise HTTPException(status_code=500, detail="AWS credentials not found.")
     except Exception as e:
@@ -97,7 +78,17 @@ async def upload_image(file: UploadFile = File(...)):
             image_path, name, similarity, model_id = match
             # Convert similarity to a native Python float
             similarity = float(similarity)
-            image_url = f"{quote(image_path)}"            
+            image_key = f"{quote(image_path)}"            
+            
+            try:
+                # Generate a pre-signed URL for each matched image
+                image_url = s3_client.generate_presigned_url(
+                    'get_object',
+                    Params={'Bucket': S3_BUCKET, 'Key': image_key},
+                    ExpiresIn=900
+                )
+            except Exception as e:
+                image_url = None
 
             # Fetch social links
             social_links = get_social_links_by_model_id(model_id)

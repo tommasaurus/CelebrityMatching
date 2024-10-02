@@ -1,38 +1,30 @@
-// ImageDisplay.js
-
 import React, { useState, useEffect } from 'react';
 
 function ImageDisplay({ imageName, modelId, onImageClick }) {  // Added onImageClick prop
     const [imageSrc, setImageSrc] = useState('');
-    const [socialLinks, setSocialLinks] = useState(null);
 
     useEffect(() => {
-        // Fetch the image from the FastAPI endpoint
-        const fetchImage = async () => {
+        // Fetch the pre-signed URL from the FastAPI endpoint
+        const fetchImageUrl = async () => {
             try {
                 const response = await fetch(`http://${process.env.REACT_APP_BACKEND_IP}:80/images/${encodeURIComponent(imageName)}`);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch image');
+                    throw new Error('Failed to fetch image URL');
                 }
 
-                // Convert the response to a Blob
-                const blob = await response.blob();
-
-                // Create a local URL for the Blob and set it as the image source
-                const imageUrl = URL.createObjectURL(blob);
+                const data = await response.json();
+                const imageUrl = data.image_url;
 
                 setImageSrc(imageUrl);
             } catch (error) {
-                console.error('Error fetching image:', error);
+                console.error('Error fetching image URL:', error);
             }
         };
 
         if (imageName) {
-            fetchImage();
+            fetchImageUrl();
         }
     }, [imageName]);
-
-    // No need to fetch social links here since it's done in MatchPopup
 
     // Handle image click
     const handleImageClick = () => {
@@ -42,8 +34,7 @@ function ImageDisplay({ imageName, modelId, onImageClick }) {  // Added onImageC
     };
 
     return (
-        <div className="image-display" onClick={handleImageClick}>  {/* Added onClick */}
-            {/* Removed Image Source debug text */}
+        <div className="image-display" onClick={handleImageClick}>  
             {imageSrc ? (
                 <img src={imageSrc} alt="Matched Celebrity" />
             ) : (

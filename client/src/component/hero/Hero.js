@@ -142,13 +142,9 @@ const Hero = ({ navigateTo }) => {
     setShowAllMatches(!showAllMatches);
   };
 
-  const handleMatchClick = (match, imageSrc) => {
-    setSelectedMatch({
-        ...match,
-        imageSrc,  // Use the blob URL
-    });
+  const handleMatchClick = (match) => {
+    setSelectedMatch(match);
   };
-
 
   const closeMatchPopup = () => {
     setSelectedMatch(null);
@@ -333,23 +329,20 @@ const Hero = ({ navigateTo }) => {
           </div>
         </div>
         {matches.length > 0 && (
-          <div className='top-matches' ref={matchesRef}>
+          <div className="top-matches" ref={matchesRef}>
             <h2>Your Top Matches</h2>
-            <div className='matches-container'>
+            <div className="matches-container">
               {matches.slice(0, showAllMatches ? 5 : 3).map((match, index) => (
-                <div
-                  key={index}
-                  className={`match match-${index + 1}`}                  
-                >
-                  <ImageDisplay
-                    imageName={match.image_url}
-                    modelId={match.model_id}
+                <div key={index} className={`match match-${index + 1}`}>
+                  <img
+                    src={match.image_url}
                     alt={`${match.name} preview`}
                     width={300}
                     height={300}
-                    onImageClick={(imageSrc) => handleMatchClick(match, imageSrc)}  
+                    onClick={() => handleMatchClick(match)}
+                    className="match-image"
                   />
-                  <div className='match-content'>
+                  <div className="match-content">
                     <p>{match.name}</p>
                     <p>Similarity: {(match.similarity * 100).toFixed(2)}%</p>
                   </div>
@@ -358,7 +351,7 @@ const Hero = ({ navigateTo }) => {
             </div>
             {matches.length > 3 && (
               <button
-                className='view-more-button'
+                className="view-more-button"
                 onClick={toggleShowAllMatches}
               >
                 {showAllMatches ? (

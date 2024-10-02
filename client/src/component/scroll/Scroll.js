@@ -1,5 +1,4 @@
 // Scroll.js
-
 import React, { useState, useEffect, useRef } from "react";
 import ModelPopup from "../ModelPopup/ModelPopup";
 import "./Scroll.css";
@@ -77,26 +76,8 @@ const InfiniteScrollImages = ({ navigateTo }) => {
     }
   };
 
-  const handleImageClick = async (image) => {
-    try {
-      const response = await fetch(
-        `http://${process.env.REACT_APP_BACKEND_IP}:80/images/${encodeURIComponent(
-          image.image_url
-        )}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch image");
-      }
-      const blob = await response.blob();
-      const imageSrc = URL.createObjectURL(blob);
-
-      setSelectedModel({
-        ...image,
-        imageSrc,
-      });
-    } catch (error) {
-      console.error("Error fetching image:", error);
-    }
+  const handleImageClick = (image) => {
+    setSelectedModel(image);
   };
 
   const closeModelPopup = () => {
@@ -104,22 +85,20 @@ const InfiniteScrollImages = ({ navigateTo }) => {
   };
 
   return (
-    <div className='scroll-page'>
-      <div className='scroll-container'>
-        <div className='image-gallery-wrapper'>
-          <h1 className='scroll-title'>Model Gallery</h1>
-          <div className='image-gallery'>
+    <div className="scroll-page">
+      <div className="scroll-container">
+        <div className="image-gallery-wrapper">
+          <h1 className="scroll-title">Model Gallery</h1>
+          <div className="image-gallery">
             {images.length > 0 ? (
               images.map((image, index) => (
                 <div
                   key={index}
-                  className='image-wrapper'
+                  className="image-wrapper"
                   onClick={() => handleImageClick(image)}
                 >
                   <img
-                    src={`http://${process.env.REACT_APP_BACKEND_IP}:80/images/${encodeURIComponent(
-                      image.image_url
-                    )}`}
+                    src={image.image_url}
                     alt={`Image of ${image.name}`}
                   />
                   <p>{image.name}</p>
@@ -129,7 +108,7 @@ const InfiniteScrollImages = ({ navigateTo }) => {
               <p>No images found</p>
             )}
           </div>
-          <div ref={observerRef} className='loading-indicator'>
+          <div ref={observerRef} className="loading-indicator">
             {loading && <p>Loading more images...</p>}
           </div>
         </div>
