@@ -5,14 +5,6 @@ from psycopg2 import pool
 from dotenv import load_dotenv
 import os
 
-# # Database connection setup
-# conn = psycopg2.connect(
-#     host="127.0.0.1",
-#     port="5432",
-#     database="celebrity",
-#     user="root",  # Ensure this is the correct username
-#     password="rootpassword"  # Ensure this is the correct password
-# )
 db_host = os.getenv("RDS_HOST")
 db_user = os.getenv("RDS_USER")
 db_password = os.getenv("RDS_PASSWORD")
@@ -27,6 +19,45 @@ connection_pool = pool.SimpleConnectionPool(
     password=db_password
 )
 
+def get_social_links_by_model_name(name):
+    """
+    Fetch social links from the database for a given model name.
+    """
+    conn = connection_pool.getconn()
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute("""
+                SELECT www, instagram, onlyfans, onlyfansfree, mym, tiktok, x, facebook, twitch, youtube, imdb, fansly, other
+                FROM onlyfans_models_arcface
+                WHERE name = %s;
+            """, (name,))
+            
+            result = cursor.fetchone()
+            
+            if result:
+                # Construct a dictionary with the retrieved data
+                social_links = {
+                    "www": result[0],
+                    "instagram": result[1],
+                    "onlyfans": result[2],
+                    "onlyfansfree": result[3],
+                    "mym": result[4],
+                    "tiktok": result[5],
+                    "x": result[6],
+                    "facebook": result[7],
+                    "twitch": result[8],
+                    "youtube": result[9],
+                    "imdb": result[10],
+                    "fansly": result[11],
+                    "other": result[12]
+                }
+                return social_links
+            else:
+                return None
+    except Exception as e:
+        raise Exception(f"Error fetching social links from database: {e}")
+    finally:
+        connection_pool.putconn(conn)
 
 def get_social_links_by_model_id(model_id):
     """

@@ -9,7 +9,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 from app.services.arcface import find_top_5_similar_from_db  # Updated import
-from app.helpers.db_helper import get_social_links_by_model_id
+from app.helpers.db_helper import get_social_links_by_model_id, get_social_links_by_model_name
 
 import boto3
 from botocore.exceptions import NoCredentialsError
@@ -133,3 +133,15 @@ async def get_social_links(model_id: int):
             raise HTTPException(status_code=404, detail="Model not found")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving social links: {str(e)}")
+
+@app.get("/get-social-links-by-name/{name}")
+async def get_social_links_by_name(name: str):
+    try:
+        social_links = get_social_links_by_model_name(name)
+        if social_links:
+            return {"social_links": social_links}
+        else:
+            return {"social_links": {}}
+    except Exception as e:
+        print(f"Error fetching social links: {e}")
+        return {"social_links": {}}
